@@ -1,8 +1,10 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Player } from '@lottiefiles/react-lottie-player';
 import logoImage from '../assets/images/icon.png';
 import { getServiceIcon } from '../utils/iconUtils';
 import ServiceCard from '../utils/cards/ServiceCards';
+import scrollDownAnimation from '../assets/animations/scroll-down';
 import Navbar from '../utils/Navbar';
 import SubcategorySelection from '../utils/SubcategorySelection';
 import ProjectDetailsForm from './ProjectDetailsForm';
@@ -220,6 +222,16 @@ const categories = getCategories();
                 </div>
               </div>
             </section>
+
+            {/* Scroll Down Animation */}
+            <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 opacity-80">
+  <Player
+    autoplay
+    loop
+    src={scrollDownAnimation}
+    style={{ height: '140px', width: '140px' }}
+  />
+</div>
             {/* Categories Catalog Section - Horizontal Scrollable */}
             <section className="py-16 mb-16 px-4">
               <div className="text-center mb-10">
