@@ -574,6 +574,6 @@ const scrollDownAnimation = {
           }
         ],
         markers: []
-
+      
 }
 export default scrollDownAnimation;
