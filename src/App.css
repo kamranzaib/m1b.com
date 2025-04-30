@@ -58,4 +58,14 @@
 .hover\:bg-indigo-700:hover {
   background-color: #4338ca;
 }
-
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

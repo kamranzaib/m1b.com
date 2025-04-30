@@ -4,6 +4,7 @@ import './App.css';
 import ConstructionAppUI from './components/homepage';
 import RenovationApp from './components/details';
 import ContactPage from './components/ContactPage';
+import PortfolioPage from './components/PortfolioPage';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,12 @@ const router = createBrowserRouter([
   {
     path: '/contact',
     element: <ContactPage />
+  },
+  {
+    path: '/portfolio',
+    element: <PortfolioPage />
   }
+
 ]);
 
 function App() {

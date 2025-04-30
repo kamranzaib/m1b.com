@@ -6,7 +6,10 @@ import {
   commercialCategories,
   kitchenSubCategories, 
   bathroomSubCategories,
-  structuralSubCategories
+  structuralSubCategories,
+  modernHomeSubCategories,
+  retailSubCategories,
+  subCategories
 } from '../data/categories';
 
 const ProjectDetailsForm = ({ 
@@ -24,34 +27,93 @@ const ProjectDetailsForm = ({
     return categoryObj ? categoryObj.name : '';
   };
   
-  // Get subcategory names
+  // Enhanced getSubcategoryNames to handle all category types
   const getSubcategoryNames = () => {
-    let subcategories = [];
+    if (!selectedCategory || !selectedSubcategories || selectedSubcategories.length === 0) {
+      return [];
+    }
+
+    let subcategoriesList = [];
+    const serviceId = getServiceId();
     
-    if (selectedCategory === 'kitchen') {
-      subcategories = kitchenSubCategories;
-    } else if (selectedCategory === 'bathroom') {
-      subcategories = bathroomSubCategories;
+    // Get the appropriate subcategory list based on category and service type
+    if (serviceId === '1') { // Custom Home Building
+      switch(selectedCategory) {
+        case 'modern':
+          subcategoriesList = modernHomeSubCategories;
+          break;
+        default:
+          subcategoriesList = subCategories['1'] || [];
+          break;
+      }
+    } else if (serviceId === '2') { // Renovations
+      switch(selectedCategory) {
+        case 'kitchen':
+          subcategoriesList = kitchenSubCategories;
+          break;
+        case 'bathroom':
+          subcategoriesList = bathroomSubCategories;
+          break;
+        case 'structural':
+          subcategoriesList = structuralSubCategories;
+          break;
+        default:
+          subcategoriesList = subCategories['2'] || [];
+          break;
+      }
+    } else if (serviceId === '3') { // Commercial
+      switch(selectedCategory) {
+        case 'retail':
+          subcategoriesList = retailSubCategories;
+          break;
+        default:
+          subcategoriesList = subCategories['3'] || [];
+          break;
+      }
     }
     
+    // Map selected IDs to names
     return selectedSubcategories.map(subId => {
-      const subcat = subcategories.find(s => s.id === subId);
+      const subcat = subcategoriesList.find(s => s.id === subId);
       return subcat ? subcat.name : '';
     }).filter(name => name);
   };
   
+  // Helper function to determine service ID
+  const getServiceId = () => {
+    if (!categories || categories.length === 0) return '2'; // Default to renovation
+    
+    const categoryObj = categories.find(c => c.id === selectedCategory);
+    if (!categoryObj) return '2';
+    
+    // Check which category list this belongs to
+    if (customHomeCategories.some(c => c.id === selectedCategory)) {
+      return '1'; // Custom Home
+    } else if (renovationCategories.some(c => c.id === selectedCategory)) {
+      return '2'; // Renovation
+    } else if (commercialCategories.some(c => c.id === selectedCategory)) {
+      return '3'; // Commercial
+    }
+    
+    return '2'; // Default to renovation
+  };
+  
   const subcategoryNames = getSubcategoryNames();
   
+  console.log('Selected category:', selectedCategory);
+  console.log('Selected subcategories:', selectedSubcategories);
+  console.log('Subcategory names:', subcategoryNames);
+  
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+    <form onSubmit={handleSubmit} className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-5 sm:p-8 border border-gray-100">
       {subcategoryNames.length > 0 && (
-        <div className="mb-6 pt-4 pb-4 border-t border-b border-gray-200">
-          <h4 className="text-gray-700 font-medium mb-2">Selected Options:</h4>
+        <div className="mb-4 sm:mb-6 pt-3 sm:pt-4 pb-3 sm:pb-4 border-t border-b border-gray-200">
+          <h4 className="text-gray-700 font-medium mb-2 text-sm sm:text-base">Selected Options:</h4>
           <div className="flex flex-wrap gap-2">
             {subcategoryNames.map((name, index) => (
               <span 
                 key={index}
-                className="bg-[#1a2e44]/10 text-[#1a2e44] px-3 py-1 rounded-full text-sm"
+                className="bg-[#1a2e44]/10 text-[#1a2e44] px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm"
               >
                 {name}
               </span>
@@ -60,8 +122,8 @@ const ProjectDetailsForm = ({
         </div>
       )}
       
-      <div className="mb-6">
-        <label className="block text-gray-700 font-medium mb-2">
+      <div className="mb-4 sm:mb-6">
+        <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
           Approximate Area (sq ft)
         </label>
         <input
@@ -69,23 +131,23 @@ const ProjectDetailsForm = ({
           name="area"
           value={projectDetails.area}
           onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+          className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base"
           placeholder="e.g. 200"
           required
         />
       </div>
       
       {/* Budget Range */}
-      <div className="mb-6">
-        <label className="block text-gray-700 font-medium mb-2">
+      <div className="mb-4 sm:mb-6">
+        <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
           Budget Range
         </label>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
           {['economy', 'medium', 'premium'].map(option => (
             <button
               key={option}
               type="button"
-              className={`p-3 rounded-lg border text-center ${
+              className={`p-2 sm:p-3 rounded-lg border text-center text-xs sm:text-sm ${
                 projectDetails.budget === option 
                   ? 'border-[#1a2e44] bg-[#1a2e44] text-white' 
                   : 'border-gray-300 text-gray-700 hover:border-gray-400'
@@ -100,69 +162,69 @@ const ProjectDetailsForm = ({
         </div>
       </div>
 
-      <div className="mb-6">
-        <label className="block text-gray-700 font-medium mb-2">
+      <div className="mb-4 sm:mb-6">
+        <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
           Project Description
         </label>
         <textarea
           name="description"
           value={projectDetails.description}
           onChange={handleChange}
-          rows="4"
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+          rows="3" 
+          className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base"
           placeholder="Describe what you want to accomplish"
           required
         ></textarea>
       </div>
       
       {/* Contact Information */}
-      <div className="pt-6 border-t border-gray-200">
-        <h3 className="text-xl font-semibold mb-4 text-gray-800">
+      <div className="pt-4 sm:pt-6 border-t border-gray-200">
+        <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800">
           Your Contact Information
         </h3>
         
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Full Name</label>
+            <label className="block text-gray-700 font-medium mb-1 sm:mb-2 text-sm sm:text-base">Full Name</label>
             <input
               type="text"
               name="name"
               value={projectDetails.name}
               onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+              className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base"
               required
             />
           </div>
           
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Email Address</label>
+            <label className="block text-gray-700 font-medium mb-1 sm:mb-2 text-sm sm:text-base">Email Address</label>
             <input
               type="email"
               name="email"
               value={projectDetails.email}
               onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+              className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base"
               required
             />
           </div>
           
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Phone Number</label>
+            <label className="block text-gray-700 font-medium mb-1 sm:mb-2 text-sm sm:text-base">Phone Number</label>
             <input
               type="tel"
               name="phone"
               value={projectDetails.phone}
               onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+              className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base"
             />
           </div>
         </div>
       </div>
       
-      <div className="mt-8">
+      <div className="mt-6 sm:mt-8">
         <button
           type="submit"
-          className="w-full bg-black hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+          className="w-full bg-black hover:bg-gray-800 text-white font-medium py-2 sm:py-3 px-4 rounded-lg transition-colors text-sm sm:text-base"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Submitting...' : 'Submit Request'}
