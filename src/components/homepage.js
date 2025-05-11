@@ -1,4 +1,4 @@
-// Updated homepage.js with background images and structure adjustments
+// src/components/homepage.js
 
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
@@ -8,12 +8,8 @@ import { serviceCategories } from '../data/categories';
 import { getServiceIcon } from '../utils/iconUtils';
 import Navbar from '../utils/Navbar';
 import orbGradientAnimation from '../assets/animations/orb-animation';
-
-const serviceImages = {
-  '1': 'http://tiny.cc/9moh001', // Custom Home Building
-  '2': 'http://tiny.cc/rmoh001', // Renovations & Additions
-  '3': 'http://tiny.cc/nmoh001'  // Commercial Projects
-};
+// Import the centralized image config
+import images from '../imageConfig';
 
 const ModernHomePage = () => {
   const servicesRef = useRef(null);
@@ -23,16 +19,15 @@ const ModernHomePage = () => {
       {/* Header/Navigation */}    
       <Navbar /> 
       
-      {/* Background Images - Similar to Contact Page */}
+      {/* Background Images - Using centralized config */}
       <div className="fixed inset-0 z-0">
-        {/* Single image for mobile, split for larger screens */}
         <div className="h-full md:h-1/2 bg-cover bg-center" 
-             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=3087&auto=format&fit=crop')" }}></div>
+             style={{ backgroundImage: `url('${images.backgrounds.main}')` }}></div>
         <div className="hidden md:block md:h-1/2 md:grid md:grid-cols-2">
           <div className="bg-cover bg-center" 
-               style={{ backgroundImage: "url('https://images.unsplash.com/photo-1600585154526-990dced4db0d?q=80&w=3087&auto=format&fit=crop')" }}></div>
+               style={{ backgroundImage: `url('${images.backgrounds.secondary}')` }}></div>
           <div className="bg-cover bg-center" 
-               style={{ backgroundImage: "url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=3087&auto=format&fit=crop')" }}></div>
+               style={{ backgroundImage: `url('${images.backgrounds.tertiary}')` }}></div>
         </div>
         <div className="absolute inset-0 bg-black/60 md:bg-black/40"></div>
       </div>
@@ -42,9 +37,9 @@ const ModernHomePage = () => {
         {/* Hero Section - Responsive adjustments */}
         <section className="relative h-[400px] sm:h-[450px] md:h-[500px] lg:h-[600px] rounded-xl sm:rounded-3xl mx-4 sm:mx-6 md:mx-8 lg:mx-16 mb-12 md:mb-16 overflow-hidden bg-[#1a2e44]/50 backdrop-blur-sm">
           <div className="absolute inset-0 rounded-xl sm:rounded-3xl">
-            {/* Background image - adjusted for mobile */}
+            {/* Background image - Using the centralized config */}
             <div className="absolute right-0 top-0 bottom-0 w-1/2 sm:w-2/3 bg-cover bg-center opacity-50"
-                 style={{backgroundImage: `url('https://images.unsplash.com/photo-1567016376408-0226e4d0c1ea?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`}}>
+                 style={{backgroundImage: `url('${images.hero.home}')`}}>
             </div>
           </div>
           
@@ -122,7 +117,7 @@ const ModernHomePage = () => {
               className="relative group rounded-xl sm:rounded-3xl overflow-hidden h-[250px] sm:h-[300px] cursor-pointer"
             >
               <img 
-                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                src={images.portfolio.project1[0]} 
                 alt="Modern house exterior" 
                 className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
               />
@@ -143,7 +138,7 @@ const ModernHomePage = () => {
               className="relative group rounded-xl sm:rounded-3xl overflow-hidden h-[250px] sm:h-[300px] cursor-pointer"
             >
               <img 
-                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                src={images.backgrounds.tertiary} 
                 alt="Modern house exterior night" 
                 className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
               />
@@ -190,7 +185,8 @@ const ModernHomePage = () => {
         </section>
 
         {/* Services Section */}
-        <section id="services" className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 mb-16 sm:mb-20 md:mb-24 mx-4 sm:mx-6 md:mx-8 lg:mx-16">          <div className="max-w-7xl mx-auto">
+        <section id="services" className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 mb-16 sm:mb-20 md:mb-24 mx-4 sm:mx-6 md:mx-8 lg:mx-16">          
+          <div className="max-w-7xl mx-auto">
             <h2 className="text-2xl sm:text-3xl md:text-4xl mb-8 sm:mb-10 md:mb-12 text-center text-white">Our Services</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
               {serviceCategories.map((service) => (
@@ -198,7 +194,7 @@ const ModernHomePage = () => {
                   key={service.id}
                   title={service.title}
                   description={service.description}
-                  image={serviceImages[service.id]}
+                  image={images.services[service.id === '1' ? 'customHome' : service.id === '2' ? 'renovation' : 'commercial']}
                   icon={getServiceIcon(service.id)}
                 />
               ))}

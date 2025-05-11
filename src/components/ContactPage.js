@@ -1,11 +1,15 @@
+// src/components/ContactPage.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Player } from '@lottiefiles/react-lottie-player';
 import Navbar from '../utils/Navbar';
 import orbGradientAnimation from '../assets/animations/orb-animation';
+import { useToast } from '../utils/context/toastContext';
+import { motion } from 'framer-motion';
 
 const ContactPage = () => {
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -15,6 +19,10 @@ const ContactPage = () => {
     projectType: 'Custom Home',
     message: ''
   });
+  
+  // Add state to track form submission
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -35,22 +43,44 @@ const ContactPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    // Reset form
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      projectType: 'Custom Home',
-      message: ''
-    });
-    // Show success message or redirect
-    alert('Thank you for your message! We will get back to you soon.');
+    
+    // Set submitting state to true to show loading indicator
+    setIsSubmitting(true);
+  
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        // Show success toast
+        showToast('Thank you for your message! We will get back to you soon.', 'success', 3000);
+        
+        // Set submitted state to true to show thank you message
+        setIsSubmitted(true);
+        
+        // Reset submitting state
+        setIsSubmitting(false);
+      } else {
+        showToast('Failed to send message. Please try again later.', 'error');
+        console.error('Backend error:', data.error);
+        setIsSubmitting(false);
+      }
+    } catch (err) {
+      showToast('Network error. Please try again.', 'error');
+      console.error('Fetch error:', err);
+      setIsSubmitting(false);
+    }
+    console.log(process.env.REACT_APP_API_BASE_URL);
   };
-
+  
   const handleGoToServices = () => {
     navigate('/');
     setTimeout(() => {
@@ -61,11 +91,56 @@ const ContactPage = () => {
     }, 100);
   };
 
+  // Thank you message component to display after form submission
+  const ThankYouMessage = () => (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="bg-[#1a2e44] text-white p-8 sm:p-12 rounded-2xl text-center"
+    >
+      <div className="flex justify-center mb-6">
+        <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
+          <svg className="w-10 h-10 text-[#1a2e44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+      </div>
+      
+      <h2 className="text-2xl sm:text-3xl font-bold mb-4">Thank You!</h2>
+      <p className="text-lg mb-6">
+        We've received your inquiry and will get back to you within 24 hours.
+      </p>
+      
+      <div className="mb-8">
+        <h3 className="text-xl font-semibold mb-2">Your Project Details:</h3>
+        <p><strong>Type:</strong> {formData.projectType}</p>
+        <p><strong>Contact:</strong> {formData.email}</p>
+      </div>
+      
+      <div className="flex flex-col sm:flex-row justify-center gap-4">
+        <button
+          onClick={() => window.location.reload()}
+          className="bg-white text-[#1a2e44] hover:bg-gray-100 px-5 py-2 rounded-lg font-medium transition-colors"
+        >
+          Submit Another Inquiry
+        </button>
+        
+        <button
+          onClick={handleGoToServices}
+          className="bg-transparent border border-white text-white hover:bg-white/20 px-5 py-2 rounded-lg font-medium transition-colors"
+        >
+          Browse Services
+        </button>
+      </div>
+    </motion.div>
+  );
+
   return (
     <div className="min-h-screen">
       <Navbar />
 
-      {/* Background Images - kept from original design */}
+      {/* Background Images */}
       <div className="fixed inset-0 z-0">
         <div className="h-full md:h-1/2 bg-cover bg-center" 
              style={{ backgroundImage: "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=3087&auto=format&fit=crop')" }}></div>
@@ -93,7 +168,7 @@ const ContactPage = () => {
           <div className="flex flex-col md:flex-row rounded-2xl overflow-hidden bg-white shadow-xl">
             {/* Left Column - Contact Information */}
             <div className="bg-[#1a2e44] text-white p-6 sm:p-10 md:w-5/12 relative" style={{ overflow: 'visible' }}>
-            {/* Info Content */}
+              {/* Info Content */}
               <div className="relative z-10">
                 <h2 className="text-2xl sm:text-3xl font-semibold mb-6">Contact Information</h2>
                 <p className="mb-8 text-white/80">
@@ -175,117 +250,143 @@ const ContactPage = () => {
                   </div>
                   <button
                     onClick={handleGoToServices}
-                    className="relative z-10 bg-transparent text-white px-4 py-2 transition-all text-sm font-medium hover:scale-105"
-                  >
+                    className="relative z-10 bg-white/10 backdrop-blur-sm text-white px-3 py-2 sm:px-4 sm:py-2 transition-all text-xs sm:text-sm font-medium hover:bg-white/30 rounded-lg"
+                    >
                     Browse Services
                   </button>
                 </div>
               </div>
             </div>
             
-            {/* Right Column - Contact Form */}
+            {/* Right Column - Contact Form or Thank You Message */}
             <div className="p-6 sm:p-10 md:w-7/12">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Name Fields - 2 column on larger screens */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {isSubmitted ? (
+                <ThankYouMessage />
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Name Fields - 2 column on larger screens */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-2">First Name</label>
+                      <input
+                        type="text"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+                        placeholder="John"
+                        required
+                        disabled={isSubmitting}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-2">Last Name</label>
+                      <input
+                        type="text"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+                        placeholder="Doe"
+                        required
+                        disabled={isSubmitting}
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Email and Phone - 2 column on larger screens */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-2">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+                        placeholder="example@email.com"
+                        required
+                        disabled={isSubmitting}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-2">Phone</label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+                        placeholder="(123) 456-7890"
+                        disabled={isSubmitting}
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Project Type Selection */}
                   <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-2">First Name</label>
-                    <input
-                      type="text"
-                      name="firstName"
-                      value={formData.firstName}
+                    <label className="block text-gray-700 text-sm font-medium mb-2">What type of project do you need?</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {['Custom Home', 'Renovation', 'Commercial', 'Other'].map((type) => (
+                        <div
+                          key={type}
+                          className={`
+                            flex items-center justify-center p-3 border rounded-lg cursor-pointer text-center transition-colors
+                            ${formData.projectType === type 
+                              ? 'border-[#1a2e44] bg-[#1a2e44] text-white' 
+                              : 'border-gray-300 hover:border-gray-400'}
+                            ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}
+                          `}
+                          onClick={() => !isSubmitting && handleRadioChange(type)}
+                        >
+                          <span className="text-sm">{type}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Message */}
+                  <div>
+                    <label className="block text-gray-700 text-sm font-medium mb-2">Message</label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
                       onChange={handleChange}
+                      rows="4"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
-                      placeholder="John"
+                      placeholder="Write your message..."
                       required
-                    />
+                      disabled={isSubmitting}
+                    ></textarea>
                   </div>
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-2">Last Name</label>
-                    <input
-                      type="text"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
-                      placeholder="Doe"
-                      required
-                    />
+                  
+                  {/* Submit Button */}
+                  <div className="text-right">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className={`
+                        bg-[#1a2e44] text-white font-medium py-3 px-6 rounded-lg transition-colors
+                        ${isSubmitting 
+                          ? 'opacity-70 cursor-not-allowed' 
+                          : 'hover:bg-[#152435]'}
+                      `}
+                    >
+                      {isSubmitting ? (
+                        <span className="flex items-center">
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Sending...
+                        </span>
+                      ) : (
+                        'Send Message'
+                      )}
+                    </button>
                   </div>
-                </div>
-                
-                {/* Email and Phone - 2 column on larger screens */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-2">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
-                      placeholder="example@email.com"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-2">Phone</label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
-                      placeholder="(123) 456-7890"
-                    />
-                  </div>
-                </div>
-                
-                {/* Project Type Selection */}
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-2">What type of project do you need?</label>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {['Custom Home', 'Renovation', 'Commercial', 'Other'].map((type) => (
-                      <div
-                        key={type}
-                        className={`
-                          flex items-center justify-center p-3 border rounded-lg cursor-pointer text-center transition-colors
-                          ${formData.projectType === type 
-                            ? 'border-[#1a2e44] bg-[#1a2e44] text-white' 
-                            : 'border-gray-300 hover:border-gray-400'}
-                        `}
-                        onClick={() => handleRadioChange(type)}
-                      >
-                        <span className="text-sm">{type}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                {/* Message */}
-                <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-2">Message</label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows="4"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
-                    placeholder="Write your message..."
-                    required
-                  ></textarea>
-                </div>
-                
-                {/* Submit Button */}
-                <div className="text-right">
-                  <button
-                    type="submit"
-                    className="bg-[#1a2e44] hover:bg-[#152435] text-white font-medium py-3 px-6 rounded-lg transition-colors"
-                  >
-                    Send Message
-                  </button>
-                </div>
-              </form>
+                </form>
+              )}
             </div>
           </div>
         </div>

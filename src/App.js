@@ -5,6 +5,8 @@ import ConstructionAppUI from './components/homepage';
 import RenovationApp from './components/details';
 import ContactPage from './components/ContactPage';
 import PortfolioPage from './components/PortfolioPage';
+import AboutPage from './components/AboutPage';
+import { ToastProvider } from './utils/context/toastContext';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: '/portfolio',
     element: <PortfolioPage />
+  },
+  {
+    path: '/about',
+    element: <AboutPage />
   }
 
 ]);
@@ -29,7 +35,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      <ToastProvider>
+        <RouterProvider router={router} />
+      </ToastProvider>
     </div>
   );
 }

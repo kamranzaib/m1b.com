@@ -24,7 +24,7 @@ const Navbar = () => {
   const navItems = [
     { label: 'Home', href: 'home', path: '/' },
     { label: 'Services', href: 'services', path: '/#services' },
-    { label: 'About', href: 'about', path: '/#about' },
+    { label: 'About', href: 'about', path: '/about' },
     { label: 'Portfolio', href: 'portfolio', path: '/portfolio' },
   ];
 
@@ -32,7 +32,7 @@ const Navbar = () => {
     const { label, href, path } = item;
     
     // If we're on the homepage and it's not the Portfolio link
-    if (isHome && label !== 'Portfolio') {
+    if (isHome && label !== 'Portfolio' && label !== 'About') {
       return (
         <a
           key={label}
