@@ -84,13 +84,13 @@ const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categorie
   };
   
   return (
-    <div ref={componentRef} id="subcategory-top" className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12">
+    <div ref={componentRef} id="subcategory-top" className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12 text-white">
       <div className="mb-6 sm:mb-10">
         <button 
           onClick={handleBack} 
-          className="inline-flex items-center text-gray-600 hover:text-black mb-3 sm:mb-4 text-sm sm:text-base"
+          className="inline-flex items-center text-gray-600 hover:text-black mb-3 sm:mb-4 text-sm sm:text-base text-white"
         >
-          <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           Back to Categories
@@ -98,13 +98,13 @@ const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categorie
         <h2 className="text-xl sm:text-2xl md:text-3xl font-light mb-3 sm:mb-4">
           Tell us about your {getCategoryName().toLowerCase()} project
         </h2>
-        <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">
+        <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base text-white">
           Select the aspects of your {getCategoryName().toLowerCase()} that you're interested in renovating.
           You can select multiple options or skip this step.
         </p>
       </div>
       
-      <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-5 sm:p-8 border border-gray-100">
+      <div className="bg-[#1a2e44]/100 rounded-xl sm:rounded-2xl shadow-lg p-5 sm:p-8 border border-gray-100">
         <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6">Select Options</h3>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
@@ -114,7 +114,7 @@ const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categorie
               className={`
                 border rounded-lg p-3 sm:p-4 cursor-pointer transition-all duration-200
                 ${selectedSubcategories.includes(subcat.id) 
-                  ? 'border-[#1a2e44] bg-[#1a2e44]/5 shadow-md' 
+                  ? 'border border-gray-300 text-white hover:text-black hover:border-gray-400 transition-colors' 
                   : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'}
               `}
               onClick={() => toggleSubcategory(subcat.id)}
@@ -142,7 +142,7 @@ const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categorie
           {/* Skip button */}
           <button
             onClick={handleSkip}
-            className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-gray-700 hover:text-black border border-gray-300 hover:border-gray-400 transition-colors text-sm sm:text-base"
+            className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium text-white hover:text-black border border-gray-300 hover:border-gray-400 transition-colors text-sm sm:text-base"
           >
             Skip this step
           </button>
@@ -154,8 +154,8 @@ const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categorie
             className={`
               w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-colors text-sm sm:text-base
               ${selectedSubcategories.length > 0
-                ? 'bg-[#1a2e44] text-white hover:bg-[#152435]'
-                : 'bg-gray-200 text-gray-500 cursor-not-allowed'}
+                               ? 'bg-[#1a2e44] text-white border border-white hover:bg-[#152435]'
+                : 'bg-[#1a2e44]/10 text-gray-500 cursor-not-allowed border border-white/30'}
             `}
           >
             Continue to Details

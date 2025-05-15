@@ -158,25 +158,39 @@ const DetailsPage = () => {
     });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  // Handle form submission (async, send to backend)
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Form submission logic
-    console.log('Project details:', {
+
+    const submissionPayload = {
       service: selectedService,
       category: selectedCategory,
       subcategories: selectedSubcategories,
       ...projectDetails
-    });
-    
-    // Simulate form submission
-    setTimeout(() => {
+    };
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submissionPayload)
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setIsSubmitting(false);
+        setCurrentScreen('confirmation');
+        window.scrollTo(0, 0);
+      } else {
+        console.error('Backend error:', data.error);
+        setIsSubmitting(false);
+      }
+    } catch (err) {
+      console.error('Fetch error:', err);
       setIsSubmitting(false);
-      setCurrentScreen('confirmation');
-      window.scrollTo(0, 0);
-    }, 1500);
+    }
   };
 
   return (
@@ -282,11 +296,11 @@ const DetailsPage = () => {
             {/* Categories Catalog Section - Mobile-Optimized Horizontal Scrollable */}
             <section 
               ref={carouselRef}
-              className={`py-10 sm:py-12 md:py-16 mb-10 sm:mb-16 px-4 bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12 transition-all duration-500 ${
+              className={`py-10 sm:py-12 md:py-16 mb-10 sm:mb-16 px-4 bg-[#1a2e44]/50 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12 transition-all duration-500 ${
                 isCarouselHighlighted ? 'bg-blue-50 dark:bg-blue-900/10' : ''
               }`}
             >
-              <div className="text-center mb-6 sm:mb-10">
+              <div className="text-center mb-6 sm:mb-10 text-white">
                 <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-2 transition-all duration-500 ${
                   isCarouselHighlighted ? 'text-blue-600 dark:text-blue-400' : ''
                 }`}>
@@ -332,26 +346,26 @@ const DetailsPage = () => {
             </section>
 
             {/* Process Steps Section */}
-            <section className="px-4 sm:px-6 md:px-8 lg:px-16 py-10 sm:py-12 md:py-16 mb-10 sm:mb-16 bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-light mb-8 sm:mb-10 text-center">
+            <section className="px-4 sm:px-6 md:px-8 lg:px-16 py-10 sm:py-12 md:py-16 mb-10 sm:mb-16  bg-[#1a2e44]/50 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-light mb-8 sm:mb-10 text-center text-white">
                 Our Process
               </h2>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 text-white">
                 <div className="text-center">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#1a2e44] text-white flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">1</div>
                   <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Consultation</h3>
-                  <p className="text-gray-600 text-sm sm:text-base">We discuss your vision, preferences, requirements, and budget to understand your needs.</p>
+                  <p className="text-white text-sm sm:text-base">We discuss your vision, preferences, requirements, and budget to understand your needs.</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#1a2e44] text-white flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">2</div>
                   <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Design & Planning</h3>
-                  <p className="text-gray-600 text-sm sm:text-base">Our team develops detailed designs and plans tailored to your specific requirements.</p>
+                  <p className="text-white text-sm sm:text-base">Our team develops detailed designs and plans tailored to your specific requirements.</p>
                 </div>
                 <div className="text-center sm:col-span-2 md:col-span-1 sm:max-w-xs sm:mx-auto md:max-w-none">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#1a2e44] text-white flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">3</div>
                   <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">Construction</h3>
-                  <p className="text-gray-600 text-sm sm:text-base">We bring your vision to life with precision craftsmanship and quality materials.</p>
+                  <p className="text-white text-sm sm:text-base">We bring your vision to life with precision craftsmanship and quality materials.</p>
                 </div>
               </div>
             </section>
@@ -360,7 +374,7 @@ const DetailsPage = () => {
         
         {/* Subcategories Selection Screen */}
         {currentScreen === 'subcategories' && (
-          <div ref={subcategoriesRef} className="bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12 mb-10 sm:mb-16">
+          <div ref={subcategoriesRef} className="bg-[#1a2e44]/50 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12 mb-10 sm:mb-16">
             <SubcategorySelection 
               category={selectedCategory}
               serviceId={getServiceId()}
@@ -373,13 +387,13 @@ const DetailsPage = () => {
         
         {/* Details Screen */}
         {currentScreen === 'details' && (
-          <div ref={detailsRef} className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12 bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12 mb-10 sm:mb-16">
+          <div ref={detailsRef} className="max--4xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12 bg-[#1a2e44]/50 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12 mb-10 sm:mb-16 text-white">
             <div className="mb-6 sm:mb-10">
               <button 
                 onClick={() => setCurrentScreen('subcategories')} 
-                className="inline-flex items-center text-gray-600 hover:text-black mb-3 sm:mb-4 text-sm sm:text-base"
+                className="inline-flex items-center text-white hover:text-black mb-3 sm:mb-4 text-sm sm:text-base"
               >
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 Back to Options
@@ -387,7 +401,7 @@ const DetailsPage = () => {
               <h2 className="text-xl sm:text-2xl md:text-3xl font-light mb-3 sm:mb-4">
                 Tell us about your {categories.find(c => c.id === selectedCategory)?.name.toLowerCase()} project
               </h2>
-              <p className="text-gray-600 text-sm sm:text-base">
+              <p className="text-white text-sm sm:text-base">
                 Please provide details about your project so we can better understand your needs.
               </p>
             </div>
@@ -433,11 +447,11 @@ const DetailsPage = () => {
         )}
         
         {/* Footer - Mobile Optimized */}
-        <footer className="bg-white/90 backdrop-blur-sm border-t border-gray-200 py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-8 lg:px-16 rounded-t-lg mx-3 sm:mx-4 md:mx-6 lg:mx-12">
+        <footer className="bg-[#1a2e44]/50 backdrop-blur-sm border-t border-gray-200 py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-8 lg:px-16 rounded-t-lg mx-3 sm:mx-4 md:mx-6 lg:mx-12 text-white">
           <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">M1B Construction</h3>
-              <p className="text-gray-600 text-sm sm:text-base">
+              <p className="text-white text-sm sm:text-base">
                 Building exceptional spaces with precision and passion since 2010.
               </p>
             </div>
@@ -447,7 +461,7 @@ const DetailsPage = () => {
               <ul className="space-y-1 sm:space-y-2">
                 {serviceCategories.map(service => (
                   <li key={service.id}>
-                    <Link to="/details" state={{ selectedService: service.title }} className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">
+                    <Link to="/details" state={{ selectedService: service.title }} className="text-white hover:text-black transition-colors text-sm sm:text-base">
                       {service.title}
                     </Link>
                   </li>
@@ -458,18 +472,18 @@ const DetailsPage = () => {
             <div>
               <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Company</h4>
               <ul className="space-y-1 sm:space-y-2">
-                <li><a href="/#about" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">About Us</a></li>
-                <li><a href="/#portfolio" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">Projects</a></li>
-                <li><a href="/#testimonials" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">Testimonials</a></li>
-                <li><Link to="/contact" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">Contact</Link></li>
+                <li><a href="/#about" className="text-white hover:text-black transition-colors text-sm sm:text-base">About Us</a></li>
+                <li><a href="/#portfolio" className="text-white hover:text-black transition-colors text-sm sm:text-base">Projects</a></li>
+                <li><a href="/#testimonials" className="text-white hover:text-black transition-colors text-sm sm:text-base">Testimonials</a></li>
+                <li><Link to="/contact" className="text-white hover:text-black transition-colors text-sm sm:text-base">Contact</Link></li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Contact</h4>
-              <p className="text-gray-600 mb-1 sm:mb-2 text-sm sm:text-base">New York, NY 10001</p>
-              <p className="text-gray-600 mb-1 sm:mb-2 text-sm sm:text-base"><a href="mailto:info@m1bconstruction.com" className="hover:text-black transition-colors">info@m1bconstruction.com</a></p>
-              <p className="text-gray-600 text-sm sm:text-base"><a href="tel:+15551234567" className="hover:text-black transition-colors">(555) 123-4567</a></p>
+              <p className="text-white mb-1 sm:mb-2 text-sm sm:text-base">New York, NY 10001</p>
+              <p className="text-white mb-1 sm:mb-2 text-sm sm:text-base"><a href="mailto:info@m1bconstruction.com" className="hover:text-black transition-colors">info@m1-b.com</a></p>
+              <p className="text-white text-sm sm:text-base"><a href="tel:+15551234567" className="hover:text-black transition-colors">(555) 123-4567</a></p>
             </div>
           </div>
           

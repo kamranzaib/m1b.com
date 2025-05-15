@@ -38,7 +38,7 @@ const Navbar = () => {
           key={label}
           href={`#${href}`}
           onClick={(e) => scrollToSection(e, href)}
-          className="relative text-gray-700 hover:text-black transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 hover:after:w-full after:bg-black after:transition-all after:duration-300"
+          className="relative text-white hover:text-black transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 hover:after:w-full after:bg-black after:transition-all after:duration-300"
         >
           {label}
         </a>
@@ -50,7 +50,7 @@ const Navbar = () => {
       <Link
         key={label}
         to={path}
-        className="relative text-gray-700 hover:text-black transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 hover:after:w-full after:bg-black after:transition-all after:duration-300"
+        className="relative text-white hover:text-black transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 hover:after:w-full after:bg-black after:transition-all after:duration-300"
       >
         {label}
       </Link>
@@ -58,10 +58,10 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white py-4 px-4 sm:px-6 md:px-8 lg:px-16 flex justify-between items-center shadow">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent py-4 px-4 sm:px-6 md:px-8 lg:px-16 flex justify-between items-center">
       {/* Logo / Brand Name */}
       <div>
-        <h1 className="text-xl sm:text-2xl font-semibold text-black">M1B Construction</h1>
+        <h1 className="text-xl sm:text-2xl font-semibold text-white">M1B</h1>
       </div>
 
       {/* Mobile Menu Button */}
@@ -72,11 +72,11 @@ const Navbar = () => {
           aria-label="Toggle mobile menu"
         >
           {mobileMenuOpen ? (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           )}

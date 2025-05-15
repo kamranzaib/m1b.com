@@ -203,10 +203,10 @@ const ModernHomePage = () => {
         </section>
       
         {/* CTA Section */}
-        <section className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 mb-16 sm:mb-20 md:mb-24 bg-gray-100/95 backdrop-blur-sm rounded-lg mx-4 sm:mx-6 md:mx-8 lg:mx-16">
+        <section className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 mb-16 sm:mb-20 md:mb-24 bg-[#1a2e44]/50 backdrop-blur-sm rounded-lg mx-4 sm:mx-6 md:mx-8 lg:mx-16 text-white">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl sm:text-3xl md:text-4xl mb-4 sm:mb-6">Ready to Start Your Project?</h2>
-            <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
+            <p className="text-white mb-6 sm:mb-8 text-sm sm:text-base">
               Whether you're ready to begin or just exploring options, we're here to help.
               Let's discuss how we can bring your vision to life.
             </p>
@@ -217,11 +217,11 @@ const ModernHomePage = () => {
         </section>
 
         {/* Footer - Mobile optimized */}
-        <footer className="bg-white/90 backdrop-blur-sm border-t border-gray-200 py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-8 lg:px-16 rounded-t-lg mx-4 sm:mx-6 md:mx-8 lg:mx-16">
+        <footer className="bg-[#1a2e44]/50 backdrop-blur-sm border-t border-gray-200 py-8 sm:py-10 md:py-12 px-4 sm:px-6 md:px-8 lg:px-16 rounded-t-lg mx-4 sm:mx-6 md:mx-8 lg:mx-16 text-white">
           <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">M1B Construction</h3>
-              <p className="text-gray-600 text-sm sm:text-base">
+              <p className="text-sm sm:text-base">
                 Building exceptional spaces with precision and passion since 2010.
               </p>
             </div>
@@ -229,28 +229,28 @@ const ModernHomePage = () => {
             <div>
               <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Services</h4>
               <ul className="space-y-1 sm:space-y-2">
-                <li><a href="#" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">Custom Homes</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">Renovations</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">Commercial</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">Consulting</a></li>
+                <li><a href="#" className="hover:text-black transition-colors text-sm sm:text-base">Custom Homes</a></li>
+                <li><a href="#" className="hover:text-black transition-colors text-sm sm:text-base">Renovations</a></li>
+                <li><a href="#" className="hover:text-black transition-colors text-sm sm:text-base">Commercial</a></li>
+                <li><a href="#" className="hover:text-black transition-colors text-sm sm:text-base">Consulting</a></li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Company</h4>
               <ul className="space-y-1 sm:space-y-2">
-                <li><a href="#" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">About Us</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">Projects</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">Testimonials</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-black transition-colors text-sm sm:text-base">Contact</a></li>
+                <li><a href="#" className="hover:text-black transition-colors text-sm sm:text-base">About Us</a></li>
+                <li><a href="#" className="hover:text-black transition-colors text-sm sm:text-base">Projects</a></li>
+                <li><a href="#" className="hover:text-black transition-colors text-sm sm:text-base">Testimonials</a></li>
+                <li><a href="#" className="hover:text-black transition-colors text-sm sm:text-base">Contact</a></li>
               </ul>
             </div>
             
             <div>
               <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Contact</h4>
-              <p className="text-gray-600 mb-1 sm:mb-2 text-sm sm:text-base">New York, NY 10001</p>
-              <p className="text-gray-600 mb-1 sm:mb-2 text-sm sm:text-base">info@m1bconstruction.com</p>
-              <p className="text-gray-600 text-sm sm:text-base">(555) 123-4567</p>
+              <p className="mb-1 sm:mb-2 text-sm sm:text-base">New York, NY 10001</p>
+              <p className=" mb-1 sm:mb-2 text-sm sm:text-base">info@m1-b.com</p>
+              <p className=" text-sm sm:text-base">(555) 123-4567</p>
             </div>
           </div>
           
