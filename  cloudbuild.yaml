@@ -1,0 +1,15 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['buildx', 'build', '--platform=linux/amd64', '-t', 'gcr.io/$PROJECT_ID/construction-app-frontend', '--push', '.']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+      'run', 'deploy', 'construction-app-frontend',
+      '--image=gcr.io/$PROJECT_ID/construction-app-frontend',
+      '--platform=managed',
+      '--region=us-central1',
+      '--allow-unauthenticated'
+    ]
+images:
+  - 'gcr.io/$PROJECT_ID/construction-app-frontend'
+options:
+  logging: CLOUD_LOGGING_ONLY
