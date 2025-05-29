@@ -24,14 +24,14 @@ export const Timeline = ({ data }) => {
 
   return (
     <div
-      className="w-full bg-white font-sans md:px-10"
+      className="w-full bg-[#1a2e44]/70 font-sans md:px-10"
       ref={containerRef}
     >
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <h2 className="text-lg md:text-4xl mb-4 text-black max-w-4xl">
+        <h2 className="text-lg md:text-4xl mb-4 text-black max-w-4xl text-white">
           Our Timeline
         </h2>
-        <p className="text-neutral-700 text-sm md:text-base max-w-sm">
+        <p className="text-neutral-700 text-sm md:text-base max-w-sm text-white">
           Building exceptional spaces with precision and passion since 2010.
         </p>
       </div>

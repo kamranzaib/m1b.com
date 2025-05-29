@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const navItems = [
     { label: 'Home', href: 'home', path: '/' },
-    { label: 'Services', href: 'services', path: '/#services' },
+    { label: 'Services', href: 'services', path: '/services' }, // Updated to point to services page
     { label: 'About', href: 'about', path: '/about' },
     { label: 'Portfolio', href: 'portfolio', path: '/portfolio' },
   ];
@@ -31,8 +31,8 @@ const Navbar = () => {
   const renderNavLink = (item) => {
     const { label, href, path } = item;
     
-    // If we're on the homepage and it's not the Portfolio link
-    if (isHome && label !== 'Portfolio' && label !== 'About') {
+    // If we're on the homepage and it's a section link (not Services anymore)
+    if (isHome && label === 'Home') {
       return (
         <a
           key={label}
@@ -45,7 +45,7 @@ const Navbar = () => {
       );
     }
     
-    // For Portfolio link or when not on homepage
+    // For all other links (including Services now)
     return (
       <Link
         key={label}
@@ -105,7 +105,8 @@ const Navbar = () => {
             {navItems.map(item => {
               const { label, href, path } = item;
               
-              if (isHome && label !== 'Portfolio') {
+              // Only the Home link scrolls on homepage
+              if (isHome && label === 'Home') {
                 return (
                   <a
                     key={label}

@@ -19,7 +19,10 @@ import {
   commercialCategories,
   kitchenSubCategories, 
   bathroomSubCategories,
-  structuralSubCategories
+  structuralSubCategories,
+  livingRoomSubCategories,
+  basementSubCategories,
+  getSubcategories
 } from '../data/categories';
 // Import the centralized image config
 import images from '../imageConfig';
@@ -138,11 +141,11 @@ const DetailsPage = () => {
   };
   
   // Handle subcategory submission
-  const handleSubcategorySubmit = (subcategories) => {
+  const handleSubcategorySubmit = () => {
+    const subcategories = getSubcategories(selectedCategory);
     setSelectedSubcategories(subcategories);
     setCurrentScreen('details');
-    
-    // Delay to ensure DOM update before scrolling
+
     setTimeout(() => {
       if (detailsRef.current) {
         detailsRef.current.scrollIntoView({ behavior: 'auto' });

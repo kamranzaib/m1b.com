@@ -6,7 +6,7 @@ import {
   structuralSubCategories,
   modernHomeSubCategories,
   retailSubCategories,
-  subCategories
+  getSubcategories
 } from '../data/categories';
 
 const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categories }) => {
@@ -15,41 +15,7 @@ const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categorie
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
 
   // Get the appropriate subcategories based on the category and service
-  const getSubcategories = () => {
-    if (serviceId === '1') { // Custom Home Building
-      switch(category) {
-        case 'modern':
-          return modernHomeSubCategories;
-        // Add cases for other custom home categories
-        default:
-          return subCategories['1']; // Default to general custom home subcategories
-      }
-    } else if (serviceId === '2') { // Renovations
-      switch(category) {
-        case 'kitchen':
-          return kitchenSubCategories;
-        case 'bathroom':
-          return bathroomSubCategories;
-        case 'structural':
-          return structuralSubCategories;
-        // Add cases for other renovation categories
-        default:
-          return subCategories['2']; // Default to general renovation subcategories
-      }
-    } else if (serviceId === '3') { // Commercial
-      switch(category) {
-        case 'retail':
-          return retailSubCategories;
-        // Add cases for other commercial categories
-        default:
-          return subCategories['3']; // Default to general commercial subcategories
-      }
-    }
-    
-    return []; // Default empty array if no matching category
-  };
-  
-  const subcategories = getSubcategories();
+  const subcategories = getSubcategories(category);
   
   const toggleSubcategory = (id) => {
     if (selectedSubcategories.includes(id)) {

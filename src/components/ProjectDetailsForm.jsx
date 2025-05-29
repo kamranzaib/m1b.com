@@ -9,8 +9,7 @@ import {
   bathroomSubCategories,
   structuralSubCategories,
   modernHomeSubCategories,
-  retailSubCategories,
-  subCategories
+  retailSubCategories
 } from '../data/categories';
 
 const ProjectDetailsForm = ({ 
@@ -26,58 +25,6 @@ const ProjectDetailsForm = ({
   const getCategoryName = () => {
     const categoryObj = categories.find(c => c.id === selectedCategory);
     return categoryObj ? categoryObj.name : '';
-  };
-  
-  // Enhanced getSubcategoryNames to handle all category types
-  const getSubcategoryNames = () => {
-    if (!selectedCategory || !selectedSubcategories || selectedSubcategories.length === 0) {
-      return [];
-    }
-
-    let subcategoriesList = [];
-    const serviceId = getServiceId();
-    
-    // Get the appropriate subcategory list based on category and service type
-    if (serviceId === '1') { // Custom Home Building
-      switch(selectedCategory) {
-        case 'modern':
-          subcategoriesList = modernHomeSubCategories;
-          break;
-        default:
-          subcategoriesList = subCategories['1'] || [];
-          break;
-      }
-    } else if (serviceId === '2') { // Renovations
-      switch(selectedCategory) {
-        case 'kitchen':
-          subcategoriesList = kitchenSubCategories;
-          break;
-        case 'bathroom':
-          subcategoriesList = bathroomSubCategories;
-          break;
-        case 'structural':
-          subcategoriesList = structuralSubCategories;
-          break;
-        default:
-          subcategoriesList = subCategories['2'] || [];
-          break;
-      }
-    } else if (serviceId === '3') { // Commercial
-      switch(selectedCategory) {
-        case 'retail':
-          subcategoriesList = retailSubCategories;
-          break;
-        default:
-          subcategoriesList = subCategories['3'] || [];
-          break;
-      }
-    }
-    
-    // Map selected IDs to names
-    return selectedSubcategories.map(subId => {
-      const subcat = subcategoriesList.find(s => s.id === subId);
-      return subcat ? subcat.name : '';
-    }).filter(name => name);
   };
   
   // Helper function to determine service ID
@@ -97,6 +44,56 @@ const ProjectDetailsForm = ({
     }
     
     return '2'; // Default to renovation
+  };
+
+  // New helper function to get subcategories by category
+  const getSubcategories = (categoryId) => {
+    if (!categoryId) return [];
+
+    const serviceId = getServiceId();
+
+    if (serviceId === '1') { // Custom Home Building
+      switch(categoryId) {
+        case 'modern':
+          return modernHomeSubCategories;
+        default:
+          return [];
+      }
+    } else if (serviceId === '2') { // Renovations
+      switch(categoryId) {
+        case 'kitchen':
+          return kitchenSubCategories;
+        case 'bathroom':
+          return bathroomSubCategories;
+        case 'structural':
+          return structuralSubCategories;
+        default:
+          return [];
+      }
+    } else if (serviceId === '3') { // Commercial
+      switch(categoryId) {
+        case 'retail':
+          return retailSubCategories;
+        default:
+          return [];
+      }
+    }
+    return [];
+  };
+  
+  // Updated getSubcategoryNames to use getSubcategories()
+  const getSubcategoryNames = () => {
+    if (!selectedCategory || !selectedSubcategories || selectedSubcategories.length === 0) {
+      return [];
+    }
+
+    const subcategoriesList = getSubcategories(selectedCategory);
+    
+    // Map selected IDs to names
+    return selectedSubcategories.map(subId => {
+      const subcat = subcategoriesList.find(s => s.id === subId);
+      return subcat ? subcat.name : '';
+    }).filter(name => name);
   };
   
   const subcategoryNames = getSubcategoryNames();

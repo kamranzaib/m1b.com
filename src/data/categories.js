@@ -140,57 +140,6 @@ export const commercialCategories = [
   }
 ];
 
-// Subcategories for each main category
-export const subCategories = {
-  // Custom Home Building (id: '1') subcategories
-  '1': [
-    { id: 'residential', name: 'Residential Homes' },
-    { id: 'multifamily', name: 'Multi-Family Buildings' },
-    { id: 'architecture', name: 'Architectural Services' },
-    { id: 'engineering', name: 'Structural Engineering' },
-    { id: 'permits', name: 'Permitting & Approvals' },
-    { id: 'foundation', name: 'Site Preparation & Foundations' },
-    { id: 'envelope', name: 'Building Shell & Envelope' },
-    { id: 'interior-design', name: 'Interior Design Services' }
-  ],
-  
-  // Renovations & Additions (id: '2') subcategories
-  '2': [
-    { id: 'kitchen', name: 'Kitchen Renovation' },
-    { id: 'bathroom', name: 'Bathroom Remodel' },
-    { id: 'basement', name: 'Basement Finishing' },
-    { id: 'addition', name: 'Home Addition' },
-    { id: 'structural', name: 'Structural Modifications' },
-    { id: 'layout', name: 'Layout Reconfiguration' },
-    { id: 'interior-design', name: 'Interior Design' },
-    { id: 'flooring', name: 'Flooring Installation' },
-    { id: 'windows', name: 'Window Replacement' },
-    { id: 'roofing', name: 'Roof Replacement/Repair' },
-    { id: 'painting', name: 'Interior/Exterior Painting' },
-    { id: 'mechanical', name: 'Mechanical Systems Replacement' },
-    { id: 'electrical', name: 'Electrical System Overhaul' },
-    { id: 'plumbing', name: 'Plumbing System Replacement' },
-    { id: 'hvac', name: 'HVAC Installation' },
-    { id: 'finishes', name: 'Interior Finishes' }
-  ],
-  
-  // Commercial Projects (id: '3') subcategories
-  '3': [
-    { id: 'retail', name: 'Retail Spaces' },
-    { id: 'office', name: 'Office Buildings' },
-    { id: 'restaurant', name: 'Restaurant Construction' },
-    { id: 'medical', name: 'Medical Facilities' },
-    { id: 'industrial', name: 'Industrial Buildings' },
-    { id: 'warehouse', name: 'Warehouse Construction' },
-    { id: 'hospitality', name: 'Hospitality Construction' },
-    { id: 'mixed', name: 'Mixed-Use Development' },
-    { id: 'consulting', name: 'Project Consultation' },
-    { id: 'feasibility', name: 'Feasibility Studies' },
-    { id: 'budgeting', name: 'Budget Planning' },
-    { id: 'scheduling', name: 'Project Scheduling' },
-    { id: 'project-mgmt', name: 'Project Management' }
-  ]
-};
 
 // For kitchen category specifically (used in details.js)
 export const kitchenSubCategories = [
@@ -232,6 +181,26 @@ export const structuralSubCategories = [
   { id: 'seismic', name: 'Seismic Retrofitting' }
 ];
 
+export const livingRoomSubCategories = [
+  { id: 'structural-changes', name: 'Structural Changes' },
+  { id: 'interior-design', name: 'Interior Design' },
+  { id: 'fireplace-mantel', name: 'Fireplace & Mantel' },
+  { id: 'lighting', name: 'Lighting Solutions' },
+  { id: 'windows-doors', name: 'Windows & Doors' },
+  { id: 'audio-visual', name: 'Audio/Visual Setup' },
+  { id: 'furniture-layout', name: 'Furniture & Layout' }
+];
+
+export const basementSubCategories = [
+  { id: 'finishing', name: 'Basement Finishing' },
+  { id: 'waterproofing', name: 'Waterproofing & Moisture Control' },
+  { id: 'insulation', name: 'Insulation & Climate Control' },
+  { id: 'flooring', name: 'Flooring Solutions' },
+  { id: 'lighting', name: 'Lighting & Electrical' },
+  { id: 'plumbing', name: 'Plumbing & Fixtures' },
+  { id: 'layout-design', name: 'Layout & Design Optimization' }
+];
+
 // Add subcategories for Custom Home Building categories
 export const modernHomeSubCategories = [
   { id: 'openplan', name: 'Open Floor Plan' },
@@ -240,6 +209,46 @@ export const modernHomeSubCategories = [
   { id: 'smarttech', name: 'Smart Home Technology' },
   { id: 'flatroof', name: 'Flat Roof Design' },
   { id: 'industrial', name: 'Industrial Design Elements' }
+];
+
+export const traditionalHomeSubCategories = [
+  { id: 'molding', name: 'Crown Molding & Trim' },
+  { id: 'fireplace', name: 'Classic Fireplace Mantels' },
+  { id: 'porch', name: 'Front Porch Designs' },
+  { id: 'roof', name: 'Gabled Roof Architecture' },
+  { id: 'paneling', name: 'Wall Paneling' }
+];
+
+export const contemporaryHomeSubCategories = [
+  { id: 'asymmetry', name: 'Asymmetrical Facades' },
+  { id: 'mixedmaterials', name: 'Mixed Materials' },
+  { id: 'largewindows', name: 'Large Window Installations' },
+  { id: 'flatroof', name: 'Flat Roof Construction' },
+  { id: 'openinterior', name: 'Open Interior Spaces' }
+];
+
+export const ecologicalHomeSubCategories = [
+  { id: 'solar', name: 'Solar Panels' },
+  { id: 'greenroof', name: 'Green Roofs' },
+  { id: 'geothermal', name: 'Geothermal Heating' },
+  { id: 'recycled', name: 'Recycled Materials' },
+  { id: 'rainwater', name: 'Rainwater Harvesting' }
+];
+
+export const luxuryHomeSubCategories = [
+  { id: 'spa', name: 'In-home Spa' },
+  { id: 'theater', name: 'Private Theater' },
+  { id: 'winecellar', name: 'Wine Cellar' },
+  { id: 'grandentry', name: 'Grand Entryway' },
+  { id: 'customstone', name: 'Custom Stonework' }
+];
+
+export const farmhouseHomeSubCategories = [
+  { id: 'shiplap', name: 'Shiplap Walls' },
+  { id: 'barndoors', name: 'Sliding Barn Doors' },
+  { id: 'wraparound', name: 'Wraparound Porch' },
+  { id: 'farmkitchen', name: 'Farmhouse Kitchen' },
+  { id: 'reclaimedwood', name: 'Reclaimed Wood Features' }
 ];
 
 // Add subcategories for Commercial Project categories
@@ -251,3 +260,90 @@ export const retailSubCategories = [
   { id: 'checkout', name: 'Checkout Counter Design' },
   { id: 'storage', name: 'Storage Solutions' }
 ];
+
+export const officeSubCategories = [
+  { id: 'workstations', name: 'Workstation Layouts' },
+  { id: 'conference', name: 'Conference Rooms' },
+  { id: 'acoustic', name: 'Acoustic Solutions' },
+  { id: 'lighting', name: 'Office Lighting' },
+  { id: 'networking', name: 'Networking & Cabling' },
+  { id: 'breakroom', name: 'Break Room Setup' }
+];
+
+export const restaurantSubCategories = [
+  { id: 'kitchen', name: 'Commercial Kitchen Setup' },
+  { id: 'dining', name: 'Dining Area Design' },
+  { id: 'bar', name: 'Bar Design' },
+  { id: 'hvac', name: 'Ventilation & HVAC' },
+  { id: 'restrooms', name: 'Restroom Fixtures' },
+  { id: 'lighting', name: 'Restaurant Lighting' }
+];
+
+export const hotelSubCategories = [
+  { id: 'guestrooms', name: 'Guest Room Design' },
+  { id: 'lobby', name: 'Lobby Design' },
+  { id: 'amenities', name: 'Amenity Spaces (Gym, Spa)' },
+  { id: 'elevators', name: 'Elevator Installation' },
+  { id: 'hallways', name: 'Corridor Finishes' },
+  { id: 'bathrooms', name: 'Hotel Bathroom Fixtures' }
+];
+
+export const medicalSubCategories = [
+  { id: 'exam', name: 'Exam Room Setup' },
+  { id: 'waiting', name: 'Waiting Room Design' },
+  { id: 'surgical', name: 'Surgical Suite Buildout' },
+  { id: 'compliance', name: 'ADA & Compliance Upgrades' },
+  { id: 'sterile', name: 'Sterilization Zones' },
+  { id: 'plumbing', name: 'Medical Gas & Plumbing' }
+];
+
+export const industrialSubCategories = [
+  { id: 'warehouse', name: 'Warehouse Layout' },
+  { id: 'loading', name: 'Loading Dock Construction' },
+  { id: 'mezzanine', name: 'Mezzanine Installation' },
+  { id: 'electrical', name: 'Industrial Electrical Work' },
+  { id: 'fire', name: 'Fire Safety Systems' },
+  { id: 'flooring', name: 'Heavy-Duty Flooring' }
+];
+
+// Utility function to get subcategories for a given renovation category
+export const getSubcategories = (categoryId) => {
+  switch (categoryId) {
+    case 'kitchen':
+      return kitchenSubCategories;
+    case 'bathroom':
+      return bathroomSubCategories;
+    case 'structural':
+      return structuralSubCategories;
+    case 'livingroom':
+      return livingRoomSubCategories;
+    case 'basement':
+      return basementSubCategories;
+    case 'modern':
+      return modernHomeSubCategories;
+    case 'traditional':
+      return traditionalHomeSubCategories;
+    case 'contemporary':
+      return contemporaryHomeSubCategories;
+    case 'ecological':
+      return ecologicalHomeSubCategories;
+    case 'luxury':
+      return luxuryHomeSubCategories;
+    case 'farmhouse':
+      return farmhouseHomeSubCategories;
+    case 'retail':
+      return retailSubCategories;
+    case 'office':
+      return officeSubCategories;
+    case 'restaurant':
+      return restaurantSubCategories;
+    case 'hotel':
+      return hotelSubCategories;
+    case 'medical':
+      return medicalSubCategories;
+    case 'industrial':
+      return industrialSubCategories;
+    default:
+      return [];
+  }
+};

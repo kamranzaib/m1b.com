@@ -6,12 +6,17 @@ import RenovationApp from './components/details';
 import ContactPage from './components/ContactPage';
 import PortfolioPage from './components/PortfolioPage';
 import AboutPage from './components/AboutPage';
+import ServicesPage from './components/ServicesPage';
 import { ToastProvider } from './utils/context/toastContext';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <ConstructionAppUI />
+  },
+  {
+    path: '/services',
+    element: <ServicesPage />
   },
   {
     path: '/details',

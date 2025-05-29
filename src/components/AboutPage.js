@@ -13,12 +13,11 @@ const AboutPage = () => {
   // Timeline data for company history
   const historyTimelineData = [
     {
-      title: "2010",
+      title: (<span className="text-white">2020</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
-            M1B Construction was founded by a team of passionate civil engineers with a vision to transform the construction industry with innovation, transparency, and exceptional craftsmanship.
-          </p>
+          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base text-white">
+M1B was founded in 2020 by a software engineer with a lifelong passion for architecture and design. Having grown up around the construction world and later working in real estate project management, he saw firsthand the inefficiencies and communication gaps developers often face. Driven by the belief that construction could be more transparent, streamlined, and client-focused, he launched M1B to build better—through both process and product.          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <img
               src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
@@ -30,11 +29,11 @@ const AboutPage = () => {
       ),
     },
     {
-      title: "2012",
+      title: (<span className="text-white">2021</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
-            Our team expanded to include award-winning architects, interior designers, and project managers, allowing us to offer comprehensive design-build services. By this point, we had completed our first 10 residential projects with rave reviews.
+          <p className="mb-6 text-sm font-normal text-white md:text-base">
+            Our team expanded to include in-house civil engineers with real-world field experience, a structural engineering consultant, a multimedia infrastructure specialist, and a seasoned foreman. This diverse expertise allowed us to streamline execution on-site and build smarter, faster, and safer. By this point, we had completed our first 10 residential project.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <img
@@ -47,10 +46,10 @@ const AboutPage = () => {
       ),
     },
     {
-      title: "2015",
+      title: (<span className="text-white">2022</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
+          <p className="mb-6 text-sm font-normal text-white md:text-base">
             We completed our 25th custom home project and established ourselves as a premier residential construction company in the New York metropolitan area. Our reputation for quality craftsmanship and attention to detail began attracting high-profile clients.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -69,10 +68,10 @@ const AboutPage = () => {
       ),
     },
     {
-      title: "2018",
+      title: (<span className="text-white">2023</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
+          <p className="mb-6 text-sm font-normal text-white md:text-base">
             Expanding our services to include commercial construction, we began transforming office spaces, retail environments, and mixed-use developments. Our first commercial project won a regional design award for innovative space utilization.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -86,23 +85,23 @@ const AboutPage = () => {
       ),
     },
     {
-      title: "2021",
+      title: (<span className="text-white">2024</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
+          <p className="mb-6 text-sm font-normal text-white md:text-base">
             We implemented cutting-edge project management systems and digital tools to provide clients with real-time updates and enhance communication throughout the construction process. Our client portal became a game-changer for transparency in the industry.
           </p>
           <div className="mb-6">
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ Custom client dashboards
             </div>
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ Real-time progress tracking
             </div>
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ Integrated communication tools
             </div>
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ Digital documentation system
             </div>
           </div>
@@ -110,10 +109,10 @@ const AboutPage = () => {
       ),
     },
     {
-      title: "2025",
+      title: (<span className="text-white">2025</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
+          <p className="mb-6 text-sm font-normal text-white md:text-base">
             With over 65 completed projects and a 100% client satisfaction rate, we continue to push boundaries and set new standards in modern construction. Our team has grown to 35 industry professionals dedicated to bringing your vision to life.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -136,20 +135,20 @@ const AboutPage = () => {
   // Process timeline data
   const processTimelineData = [
     {
-      title: "Consultation",
+      title: (<span className="text-white">Consultation</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
+          <p className="mb-6 text-sm font-normal text-white md:text-base">
             We begin with a detailed discussion about your vision, requirements, preferences, and budget. Our goal is to fully understand what you want to achieve with your project.
           </p>
           <div className="mb-6">
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ In-depth needs assessment
             </div>
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ Budget planning consultation
             </div>
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ Timeline expectations
             </div>
           </div>
@@ -157,10 +156,10 @@ const AboutPage = () => {
       ),
     },
     {
-      title: "Design & Planning",
+      title: (<span className="text-white">Design & Planning</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
+          <p className="mb-6 text-sm font-normal text-white md:text-base">
             Our team of architects and designers creates custom plans tailored to your needs. We collaborate closely with you to refine the designs until they perfectly match your vision.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -174,23 +173,23 @@ const AboutPage = () => {
       ),
     },
     {
-      title: "Project Execution",
+      title: (<span className="text-white">Project Execution</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
+          <p className="mb-6 text-sm font-normal text-white md:text-base">
             Construction begins with our skilled craftsmen bringing your project to life. A dedicated project manager oversees every aspect of the build, ensuring quality and timely execution.
           </p>
           <div className="mb-6">
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ Site preparation
             </div>
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ Foundation and structural work
             </div>
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ Mechanical, electrical, and plumbing
             </div>
-            <div className="flex items-center gap-2 text-sm text-neutral-800">
+            <div className="flex items-center gap-2 text-sm text-white">
               ✅ Interior and exterior finishes
             </div>
           </div>
@@ -198,10 +197,10 @@ const AboutPage = () => {
       ),
     },
     {
-      title: "Progress Tracking",
+      title: (<span className="text-white">Progress Tracking</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
+          <p className="mb-6 text-sm font-normal text-white md:text-base">
             You receive access to our project management platform where you can track progress in real-time. Weekly updates keep you informed about milestones and upcoming work.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -224,10 +223,10 @@ const AboutPage = () => {
       ),
     },
     {
-      title: "Completion",
+      title: (<span className="text-white">Completion</span>),
       content: (
         <div>
-          <p className="mb-6 text-sm font-normal text-neutral-800 md:text-base">
+          <p className="mb-6 text-sm font-normal text-white md:text-base">
             Once construction is complete and all inspections are passed, we hand over your new space. We provide complete documentation and warranty information for your peace of mind.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -303,10 +302,10 @@ const AboutPage = () => {
         </section>
         
         {/* Our Story Section with Timeline */}
-        <section className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 mb-16 bg-white/90 backdrop-blur-sm rounded-lg mx-4 sm:mx-6 md:mx-8 lg:mx-16">
+        <section className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 mb-16 bg-white/10 backdrop-blur-sm rounded-lg mx-4 sm:mx-6 md:mx-8 lg:mx-16">
           <div className="max-w-7xl mx-auto mb-10">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light mb-6 sm:mb-8 text-center">Our Story</h2>
-            <p className="text-center text-gray-600 max-w-3xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light mb-6 sm:mb-8 text-center text-white">Our Story</h2>
+            <p className="text-center text-gray-600 text-white max-w-3xl mx-auto">
               From our humble beginnings to becoming a leading construction company in New York, our journey has been defined by passion, innovation, and dedication to quality.
             </p>
           </div>
@@ -345,7 +344,7 @@ const AboutPage = () => {
         </section>
         
         {/* Our Process Section with Timeline */}
-        <section className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 mb-16 bg-white/90 backdrop-blur-sm rounded-lg mx-4 sm:mx-6 md:mx-8 lg:mx-16">
+        <section className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 mb-16 bg-[#1a2e44]/50 backdrop-blur-sm rounded-lg mx-4 sm:mx-6 md:mx-8 lg:mx-16">
           <div className="max-w-7xl mx-auto mb-10">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-light mb-6 sm:mb-8 text-center">Our Process</h2>
             <p className="text-center text-gray-600 max-w-3xl mx-auto">

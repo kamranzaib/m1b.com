@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Player } from '@lottiefiles/react-lottie-player';
 import Navbar from '../utils/Navbar';
+import Footer from '../utils/Footer';
 import orbGradientAnimation from '../assets/animations/orb-animation';
 import { useToast } from '../utils/context/toastContext';
 import { motion } from 'framer-motion';
@@ -82,13 +83,7 @@ const ContactPage = () => {
   };
   
   const handleGoToServices = () => {
-    navigate('/');
-    setTimeout(() => {
-      const servicesSection = document.getElementById('services');
-      if (servicesSection) {
-        servicesSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    }, 100);
+    navigate('/services');
   };
 
   // Thank you message component to display after form submission
