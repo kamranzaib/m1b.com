@@ -9,23 +9,24 @@ export const portfolioProjects = [
     location: "Brooklyn, NY",
     year: "2023",
     images: [
-      "https://storage.cloud.google.com/m1b_portfolio_photos/project%20photos/renovated/renovated/148-150_Clinton_-kitchen02-2-scaled.jpg?authuser=1",
-      "https://storage.cloud.google.com/m1b_portfolio_photos/project%20photos/renovated/renovated/Living-Dining-Room-scaled.jpg?authuser=1",
-      "https://storage.cloud.google.com/m1b_portfolio_photos/project%20photos/renovated/renovated/2N-Outdoor_staged_2-scaled.jpg?authuser=1"
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/148-150_Clinton_-kitchen02-2-scaled.jpg",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/Living-Dining-Room-scaled.jpg",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/2N-Outdoor_staged_2-scaled.jpg"
     ],
     featured: true
   },
   {
     id: 2,
-    title: "Midcentury Modern Renovation",
+    title: "Bathroom",
     category: "Renovation",
     description: "Complete restoration of a 1960s architectural gem, preserving original elements while adding modern amenities and energy efficiency.",
-    location: "Palm Springs, CA",
-    year: "2022",
+    location: "Brooklyn, NY",
+    year: "2024",
     images: [
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?...",
-      "https://images.unsplash.com/photo-1600573472550-8090733a21e0?...",
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?..."
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/27%20(1).jpeg",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/356_bathroom.webp",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/176-Atlantic-Ave_-2-2-1-scaled.jpg"
+
     ],
     featured: true
   },
@@ -48,12 +49,11 @@ export const portfolioProjects = [
     title: "Luxury Kitchen Remodel",
     category: "Renovation",
     description: "High-end kitchen renovation featuring custom cabinetry, marble countertops, and state-of-the-art appliances.",
-    location: "Chicago, IL",
+    location: "Brooklyn, NY",
     year: "2022",
     images: [
-      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?...",
-      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?...",
-      "https://images.unsplash.com/photo-1556761175-b413da4baf72?..."
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/09.jpeg",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/176-Atlantic-Ave_-2-7-1-scaled.jpg"
     ],
     featured: false
   },
@@ -65,10 +65,10 @@ export const portfolioProjects = [
     location: "Hells Kitchen, NY",
     year: "2024",
     images: [
-      "https://storage.cloud.google.com/m1b_portfolio_photos/project%20photos/renovated/renovated/356_living.webp?authuser=1",
-      "https://storage.cloud.google.com/m1b_portfolio_photos/project%20photos/renovated/renovated/356_bed.webp?authuser=1",
-      "https://storage.cloud.google.com/m1b_portfolio_photos/project%20photos/renovated/renovated/356_bathroom.webp?authuser=1",
-      "https://storage.cloud.google.com/m1b_portfolio_photos/project%20photos/renovated/renovated/356_facade.webp?authuser=1"
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/356_living.webp",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/356_bed.webp",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/356_bathroom.webp",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/356_facade.webp"
     ],
     featured: false
   },

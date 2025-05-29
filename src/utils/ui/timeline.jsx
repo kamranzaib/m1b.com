@@ -28,12 +28,9 @@ export const Timeline = ({ data }) => {
       ref={containerRef}
     >
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <h2 className="text-lg md:text-4xl mb-4 text-black max-w-4xl text-white">
+        <h2 className="text-center text-3xl md:text-5xl mb-4 text-white font-nunito italic tracking-wide">
           Our Timeline
         </h2>
-        <p className="text-neutral-700 text-sm md:text-base max-w-sm text-white">
-          Building exceptional spaces with precision and passion since 2010.
-        </p>
       </div>
 
       <div ref={ref} className="relative max-w-7xl mx-auto pb-20">

@@ -8,7 +8,7 @@ const Footer = () => (
       <div>
         <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">M1B Construction</h3>
         <p className="text-sm sm:text-base">
-          Building exceptional spaces with precision and passion since 2010.
+          Building exceptional spaces with precision and passion.
         </p>
       </div>
 

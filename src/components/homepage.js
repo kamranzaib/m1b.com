@@ -84,7 +84,7 @@ const ModernHomePage = () => {
         </section>
 
         {/* Dream Build Section */}
-        <section className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 text-center mb-16 sm:mb-20 md:mb-24 bg-white/90 backdrop-blur-sm rounded-lg mx-4 sm:mx-6 md:mx-8 lg:mx-16">
+        <section className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 text-center mb-16 sm:mb-20 md:mb-24 bg-[#1a2e44]/30 backdrop-blur-sm rounded-lg mx-4 sm:mx-6 md:mx-8 lg:mx-16">
           <div className="max-w-4xl mx-auto">
             <div className="mb-6 sm:mb-8 flex justify-center">
               <div className="w-5 h-5 sm:w-6 sm:h-6 text-black">
@@ -94,10 +94,10 @@ const ModernHomePage = () => {
                 </svg>
               </div>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl text-gray-800 mb-3">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl text-gray-800 mb-3 text-white">
               If you can <span className="italic">dream it</span>, we can <span className="italic">build it</span>.
             </h2>
-            <p className="text-gray-600 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed text-sm sm:text-base">
+            <p className="text-gray-600 mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed text-sm sm:text-base text-white">
               We adopt a uniquely personalized perspective to each project to deliver stunning spaces of optimal function.
               Renowned for our architectural understanding and masterful craftsmanship, our portfolio of residential projects.
             </p>
@@ -130,21 +130,23 @@ const ModernHomePage = () => {
             </Link>
 
             {/* Estimates Video */}
-            <div className="relative group rounded-xl sm:rounded-3xl overflow-hidden h-[250px] sm:h-[300px] cursor-pointer">
-              <div className="overflow-hidden">
-                <video 
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  src="/video/Estimates.mp4"
-                />
+            <Link to="/services" className="block">
+              <div className="relative group rounded-xl sm:rounded-3xl overflow-hidden h-[250px] sm:h-[300px] cursor-pointer">
+                <div className="overflow-hidden">
+                  <video 
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    src="/video/Estimates.mp4"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <span className="text-white text-xl font-semibold tracking-wide">ESTIMATES</span>
+                </div>
               </div>
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                <span className="text-white text-xl font-semibold tracking-wide">ESTIMATES</span>
-              </div>
-            </div>
+            </Link>
           </div>
         </section>
 
