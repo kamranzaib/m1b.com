@@ -135,7 +135,7 @@ const ProjectDetailsForm = ({
               name="area"
               value={projectDetails.area}
               onChange={handleChange}
-              className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base"
+              className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base text-gray-800"
               placeholder="e.g. 200"
               required
               disabled={isSubmitting}
@@ -178,7 +178,7 @@ const ProjectDetailsForm = ({
               value={projectDetails.description}
               onChange={handleChange}
               rows="4" 
-              className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base"
+              className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base text-gray-800"
               placeholder="Describe what you want to accomplish"
               required
               disabled={isSubmitting}
@@ -201,7 +201,7 @@ const ProjectDetailsForm = ({
                 name="name"
                 value={projectDetails.name}
                 onChange={handleChange}
-                className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base"
+                className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base text-gray-800"
                 required
                 disabled={isSubmitting}
               />
@@ -215,7 +215,7 @@ const ProjectDetailsForm = ({
                 name="email"
                 value={projectDetails.email}
                 onChange={handleChange}
-                className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base"
+                className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base text-gray-800"
                 required
                 disabled={isSubmitting}
               />
@@ -229,7 +229,7 @@ const ProjectDetailsForm = ({
                 name="phone"
                 value={projectDetails.phone}
                 onChange={handleChange}
-                className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base"
+                className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent text-sm sm:text-base text-gray-800"
                 disabled={isSubmitting}
               />
             </div>
