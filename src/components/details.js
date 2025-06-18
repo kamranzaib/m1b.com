@@ -141,9 +141,8 @@ const DetailsPage = () => {
   };
   
   // Handle subcategory submission
-  const handleSubcategorySubmit = () => {
-    const subcategories = getSubcategories(selectedCategory);
-    setSelectedSubcategories(subcategories);
+  const handleSubcategorySubmit = (userSelectedSubcategories) => {
+    setSelectedSubcategories(userSelectedSubcategories);
     setCurrentScreen('details');
 
     setTimeout(() => {
@@ -162,7 +161,7 @@ const DetailsPage = () => {
   };
 
   // Handle form submission (async, send to backend)
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, finalData = null) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -170,7 +169,8 @@ const DetailsPage = () => {
       service: selectedService,
       category: selectedCategory,
       subcategories: selectedSubcategories,
-      ...projectDetails
+      ...projectDetails,
+      ...(finalData || {})
     };
 
     try {
@@ -338,7 +338,7 @@ const DetailsPage = () => {
                         <div className="absolute inset-0 flex flex-col justify-end p-3 sm:p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
                           <h3 className="text-white text-sm sm:text-base md:text-lg font-medium">{category.name}</h3>
                           <p className="text-white/90 text-xs sm:text-sm mt-1">
-                            Starting from <span className="font-bold">$5,000</span>
+                            Starting from <span className="font-bold">$1,000</span>
                           </p>
                         </div>
                       </div>
@@ -383,7 +383,7 @@ const DetailsPage = () => {
               serviceId={getServiceId()}
               categories={categories}
               onBack={() => setCurrentScreen('categories')}
-              onSubmit={handleSubcategorySubmit}
+              onSubmit={(selected) => handleSubcategorySubmit(selected)}
             />
           </div>
         )}

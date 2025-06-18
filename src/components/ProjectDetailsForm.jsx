@@ -1,15 +1,12 @@
 // src/components/ProjectDetailsForm.jsx
-import React from 'react';
+import React, { useState } from 'react';
+import UploadPhoto from '../utils/photoUploader';
 import { 
   serviceCategories, 
   renovationCategories,
   customHomeCategories,
   commercialCategories,
-  kitchenSubCategories, 
-  bathroomSubCategories,
-  structuralSubCategories,
-  modernHomeSubCategories,
-  retailSubCategories
+  getSubcategories  // IMPORT THIS FROM THE DATA FILE
 } from '../data/categories';
 
 const ProjectDetailsForm = ({ 
@@ -21,6 +18,7 @@ const ProjectDetailsForm = ({
   selectedSubcategories,
   categories 
 }) => {
+  const [uploadedPhotos, setUploadedPhotos] = useState([]);
   
   const getCategoryName = () => {
     const categoryObj = categories.find(c => c.id === selectedCategory);
@@ -46,60 +44,41 @@ const ProjectDetailsForm = ({
     return '2'; // Default to renovation
   };
 
-  // New helper function to get subcategories by category
-  const getSubcategories = (categoryId) => {
-    if (!categoryId) return [];
-
-    const serviceId = getServiceId();
-
-    if (serviceId === '1') { // Custom Home Building
-      switch(categoryId) {
-        case 'modern':
-          return modernHomeSubCategories;
-        default:
-          return [];
-      }
-    } else if (serviceId === '2') { // Renovations
-      switch(categoryId) {
-        case 'kitchen':
-          return kitchenSubCategories;
-        case 'bathroom':
-          return bathroomSubCategories;
-        case 'structural':
-          return structuralSubCategories;
-        default:
-          return [];
-      }
-    } else if (serviceId === '3') { // Commercial
-      switch(categoryId) {
-        case 'retail':
-          return retailSubCategories;
-        default:
-          return [];
-      }
-    }
-    return [];
-  };
+  // REMOVE THE DUPLICATE getSubcategories FUNCTION - USE THE IMPORTED ONE
   
-  // Updated getSubcategoryNames to use getSubcategories()
+  // Updated getSubcategoryNames to ensure only selected subcategories (valid for the chosen category) are submitted
   const getSubcategoryNames = () => {
     if (!selectedCategory || !selectedSubcategories || selectedSubcategories.length === 0) {
       return [];
     }
 
-    const subcategoriesList = getSubcategories(selectedCategory);
-    
-    // Map selected IDs to names
-    return selectedSubcategories.map(subId => {
-      const subcat = subcategoriesList.find(s => s.id === subId);
-      return subcat ? subcat.name : '';
-    }).filter(name => name);
+    const subcategoriesList = getSubcategories(selectedCategory); // NOW USES THE IMPORTED FUNCTION
+    const validSubIds = new Set(subcategoriesList.map(s => s.id));
+
+    return selectedSubcategories
+      .filter(subId => validSubIds.has(subId))
+      .map(subId => {
+        const subcat = subcategoriesList.find(s => s.id === subId);
+        return subcat?.name || '';
+      })
+      .filter(name => name);
   };
   
   const subcategoryNames = getSubcategoryNames();
   
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const finalData = {
+      ...projectDetails,
+      uploadedPhotos,
+      category: getCategoryName(),
+      subcategories: getSubcategoryNames(),
+    };
+    handleSubmit(e, finalData);
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-5 sm:p-8 border border-gray-100">
+    <form onSubmit={handleFormSubmit} className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-5 sm:p-8 border border-gray-100">
       {/* Selected Options - Displayed at the top if there are any */}
       {subcategoryNames.length > 0 && (
         <div className="mb-4 sm:mb-6 py-3 sm:py-4 border-b border-gray-200">
@@ -166,6 +145,14 @@ const ProjectDetailsForm = ({
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Upload Photo */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-2 text-sm sm:text-base">
+              Upload a Photo (optional)
+            </label>
+            <UploadPhoto onUploadComplete={(files) => setUploadedPhotos(files)} />
           </div>
           
           {/* Project Description */}

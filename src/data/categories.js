@@ -26,7 +26,7 @@ export const renovationCategories = [
     id: 'kitchen',
     name: 'Kitchen',
     description: 'Modern kitchen renovations and upgrades',
-    image: 'https://images.unsplash.com/photo-1556911220-bda9f7f3fe9b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'
+    image: 'https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/148-150_Clinton_-kitchen02-2-scaled.jpg'
   },
   {
     id: 'bathroom',
@@ -56,7 +56,7 @@ export const renovationCategories = [
     id: 'outdoor',
     name: 'Outdoor Space',
     description: 'Beautiful backyard and patio designs',
-    image: 'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'
+    image: 'https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/2N-Outdoor_staged_2-scaled.jpg'
   }
 ];
 

@@ -34,7 +34,7 @@ const Footer = () => (
         <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Contact</h4>
         <p className="mb-1 sm:mb-2 text-sm sm:text-base">New York, NY 10001</p>
         <p className=" mb-1 sm:mb-2 text-sm sm:text-base">info@m1-b.com</p>
-        <p className=" text-sm sm:text-base">(555) 123-4567</p>
+        <p className=" text-sm sm:text-base">(917) 893-0561</p>
       </div>
     </div>
 
