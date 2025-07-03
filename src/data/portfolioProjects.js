@@ -32,15 +32,16 @@ export const portfolioProjects = [
   },
   {
     id: 3,
-    title: "Downtown Loft Conversion",
-    category: "Commercial",
-    description: "Transformed an industrial warehouse into a vibrant mixed-use space with offices, retail, and luxury apartments.",
+    title: "356 West Basement Duplex",
+    category: "Custom Home",
+    description: "Transformed basement and ground floors into beautiful duplex units",
     location: "New York, NY",
-    year: "2023",
+    year: "2025",
     images: [
-      "https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?...",
-      "https://images.unsplash.com/photo-1556761175-b413da4baf72?...",
-      "https://images.unsplash.com/photo-1600566752355-35792bedcfea?..."
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/IMG_5852.JPG",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/IMG_5841.JPG",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/IMG_5830.JPG",
+      "https://storage.googleapis.com/m1b_portfolio_photos/project%20photos/renovated/renovated/IMG_5844.JPG"
     ],
     featured: true
   },
