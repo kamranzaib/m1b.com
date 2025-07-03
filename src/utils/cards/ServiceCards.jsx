@@ -1,11 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { buildUrl } from '../urlUtils';
 
 const ServiceCard = ({ title, description, service, image, icon }) => {
+  // Generate URL-aware navigation
+  const getServiceSlug = (title) => {
+    const titleToSlug = {
+      'Custom Home Building': 'custom-home',
+      'Renovations & Additions': 'renovations',
+      'Commercial Projects': 'commercial'
+    };
+    return titleToSlug[title] || 'custom-home';
+  };
+
+  const detailsUrl = buildUrl('/details', {
+    service: getServiceSlug(title),
+    step: 'categories'
+  });
+
   return (
     <Link
-      to="/details"
-      state={{ selectedService: title, fromHomepage: true }}
+      to={detailsUrl}
       className="rounded-xl sm:rounded-2xl overflow-hidden text-white relative group hover:shadow-lg transition transform hover:-translate-y-1 h-[220px] sm:h-[250px] md:h-[300px]"
     >
       {/* Background Image and Overlay */}

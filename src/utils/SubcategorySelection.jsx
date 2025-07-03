@@ -9,10 +9,15 @@ import {
   getSubcategories
 } from '../data/categories';
 
-const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categories }) => {
+const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categories, selectedSubcategories: initialSelectedSubcategories = [] }) => {
   
   const componentRef = useRef(null);
-  const [selectedSubcategories, setSelectedSubcategories] = useState([]);
+  const [selectedSubcategories, setSelectedSubcategories] = useState(initialSelectedSubcategories);
+
+  // Update local state when initial selections change (from URL)
+  useEffect(() => {
+    setSelectedSubcategories(initialSelectedSubcategories);
+  }, [initialSelectedSubcategories]);
 
   // Get the appropriate subcategories based on the category and service
   const subcategories = getSubcategories(category);
@@ -54,12 +59,12 @@ const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categorie
       <div className="mb-6 sm:mb-10">
         <button 
           onClick={handleBack} 
-          className="inline-flex items-center text-gray-600 hover:text-black mb-3 sm:mb-4 text-sm sm:text-base text-white"
+          className="inline-flex items-center rounded-lg px-3 py-2 cursor-pointer text-white opacity-50 hover:opacity-100 hover:text-black transition-all mb-3 sm:mb-4 text-sm sm:text-base"
         >
           <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Back to Categories
+          <span>Back to Categories</span>
         </button>
         <h2 className="text-xl sm:text-2xl md:text-3xl font-light mb-3 sm:mb-4">
           Tell us about your {getCategoryName().toLowerCase()} project
@@ -99,7 +104,7 @@ const SubcategorySelection = ({ category, serviceId, onBack, onSubmit, categorie
                   )}
                 </div>
                 <span className="font-medium text-sm sm:text-base">{subcat.name}</span>
-              </div>
+            </div>
             </div>
           ))}
         </div>

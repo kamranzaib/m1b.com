@@ -10,6 +10,7 @@ import Footer from '../utils/Footer';
 // Import the centralized image config
 import images from '../imageConfig';
 import { Timeline } from '../utils/ui/timeline';
+import Meta from './Meta';
 
 
 const ServicesPage = () => {
@@ -124,6 +125,7 @@ const ServicesPage = () => {
   ];
   return (
     <div className="min-h-screen bg-white pt-20 sm:pt-24 md:pt-32">
+      <Meta />
       {/* Header/Navigation */}    
       <Navbar /> 
       

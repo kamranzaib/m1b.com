@@ -12,6 +12,7 @@ import SubcategorySelection from '../utils/SubcategorySelection';
 import ProjectDetailsForm from './ProjectDetailsForm';
 import motion from 'framer-motion';
 import { useToast } from '../utils/context/toastContext';
+import Meta from './Meta';
 import { 
   serviceCategories, 
   renovationCategories,
@@ -26,6 +27,11 @@ import {
 } from '../data/categories';
 // Import the centralized image config
 import images from '../imageConfig';
+// URL-aware navigation hooks
+import { useUrlState } from '../hooks/useUrlState';
+import { useStepNavigation } from '../hooks/useStepNavigation';
+import { serviceSlugToId, serviceIdToSlug, generateMetaTags } from '../utils/urlUtils';
+import { validateStepTransition } from '../utils/stepValidation';
 
 const DetailsPage = () => {
   const topRef = useRef(null);
@@ -35,16 +41,13 @@ const DetailsPage = () => {
   const carouselRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const selectedService = location.state?.selectedService || 'Custom Home Building';
   
-  // State to track the app flow
-  const [initialLoad, setInitialLoad] = useState(true);
-  const [currentScreen, setCurrentScreen] = useState('categories');
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSubcategories, setSelectedSubcategories] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isCarouselHighlighted, setIsCarouselHighlighted] = useState(false);
-  const [projectDetails, setProjectDetails] = useState({
+  // URL-aware state management
+  const { urlState, updateUrl, navigateWithState } = useUrlState({
+    service: null,
+    category: null,
+    subcategories: [],
+    step: 'categories',
     area: '',
     scope: 'partial',
     budget: 'medium',
@@ -54,6 +57,54 @@ const DetailsPage = () => {
     email: '',
     phone: ''
   });
+  
+  // Step navigation with URL sync
+  const {
+    currentStep,
+    navigateToStep,
+    nextStep,
+    previousStep,
+    isStepAccessible,
+    getProgress
+  } = useStepNavigation({
+    steps: ['categories', 'subcategories', 'form', 'confirmation'],
+    defaultStep: 'categories',
+    requiredFields: {
+      form: ['name', 'email', 'service', 'category']
+      // subcategories is an array, handled separately
+    }
+  });
+  
+  // Simplified form state (temporarily removing persistence to fix infinite loop)
+  const [formData, setFormData] = useState({
+    area: '',
+    scope: 'partial',
+    budget: 'medium',
+    timeline: 'flexible',
+    description: '',
+    name: '',
+    email: '',
+    phone: ''
+  });
+  
+  // Legacy support and initialization
+  const selectedService = getSelectedServiceTitle();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCarouselHighlighted, setIsCarouselHighlighted] = useState(false);
+  
+  // Get service title from URL state or location state (legacy)
+  function getSelectedServiceTitle() {
+    if (urlState.service) {
+      const serviceLabels = {
+        'custom-home': 'Custom Home Building',
+        'renovations': 'Renovations & Additions', 
+        'commercial': 'Commercial Projects'
+      };
+      return serviceLabels[urlState.service] || 'Custom Home Building';
+    }
+    return location.state?.selectedService || 'Custom Home Building';
+  }
+
 
   // Get service hero image
   const getServiceHeroImage = () => {
@@ -70,8 +121,11 @@ const DetailsPage = () => {
     }
   };
 
-  // Find the service ID based on the selected service title
+  // Find the service ID based on URL state or selected service title
   const getServiceId = () => {
+    if (urlState.service) {
+      return serviceSlugToId[urlState.service] || '1';
+    }
     const service = serviceCategories.find(s => s.title === selectedService);
     return service ? service.id : '1'; // Default to Custom Home Building (id: '1')
   };
@@ -93,12 +147,68 @@ const DetailsPage = () => {
 
   const categories = getCategories();
   
-  // Scroll to top when component mounts
+  // Initialize component from URL state and handle deep linking
   useEffect(() => {
-    if (topRef.current) {
+    // Handle legacy navigation (location.state)
+    if (location.state?.selectedService && !urlState.service) {
+      const serviceSlug = getServiceSlugFromTitle(location.state.selectedService);
+      updateUrl({ service: serviceSlug }, { replace: true });
+    }
+
+    // Scroll to appropriate section based on current step
+    setTimeout(() => {
+      scrollToCurrentStep();
+    }, 100);
+
+    // Update meta tags for SEO
+    updateMetaTags();
+  }, [currentStep]); // FIX: removed urlState to prevent scroll jitter
+  
+  // Helper function to get service slug from title
+  const getServiceSlugFromTitle = (title) => {
+    const titleToSlug = {
+      'Custom Home Building': 'custom-home',
+      'Renovations & Additions': 'renovations',
+      'Commercial Projects': 'commercial'
+    };
+    return titleToSlug[title] || 'custom-home';
+  };
+  
+  // Scroll to current step
+  const scrollToCurrentStep = () => {
+    const refs = {
+      categories: categoriesRef,
+      subcategories: subcategoriesRef,
+      form: detailsRef,
+      confirmation: topRef
+    };
+    
+    const targetRef = refs[currentStep];
+    if (targetRef?.current) {
+      targetRef.current.scrollIntoView({ behavior: 'auto' });
+    } else if (topRef.current) {
       topRef.current.scrollIntoView({ behavior: 'auto' });
     }
-  }, []);
+  };
+  
+  // Update meta tags based on current URL state
+  const updateMetaTags = () => {
+    const metaTags = generateMetaTags({
+      service: urlState.service,
+      category: urlState.category,
+      step: currentStep
+    });
+    
+    document.title = metaTags.title;
+    
+    let descriptionMeta = document.querySelector('meta[name="description"]');
+    if (!descriptionMeta) {
+      descriptionMeta = document.createElement('meta');
+      descriptionMeta.name = 'description';
+      document.head.appendChild(descriptionMeta);
+    }
+    descriptionMeta.content = metaTags.description;
+  };
 
   // Content-specific edge images based on service
   const getEdgeImages = () => {
@@ -127,49 +237,47 @@ const DetailsPage = () => {
     }
   };
 
-  // Handle category selection
+  // Handle category selection with URL update
   const selectCategory = (category) => {
-    setSelectedCategory(category);
-    setCurrentScreen('subcategories');
-    
-    // Delay to ensure DOM update before scrolling
-    setTimeout(() => {
-      if (subcategoriesRef.current) {
-        subcategoriesRef.current.scrollIntoView({ behavior: 'auto' });
-      }
-    }, 0);
-  };
-  
-  // Handle subcategory submission
-  const handleSubcategorySubmit = (userSelectedSubcategories) => {
-    setSelectedSubcategories(userSelectedSubcategories);
-    setCurrentScreen('details');
-
-    setTimeout(() => {
-      if (detailsRef.current) {
-        detailsRef.current.scrollIntoView({ behavior: 'auto' });
-      }
-    }, 0);
-  };
-  // Handle form changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProjectDetails({
-      ...projectDetails,
-      [name]: value
+    // Update URL with category selection and navigate to subcategories
+    updateUrl({ 
+      category,
+      step: 'subcategories',
+      subcategories: [] // Reset subcategories when category changes
     });
   };
+  
+  // Handle subcategory submission with URL update
+  const handleSubcategorySubmit = (userSelectedSubcategories) => {
+    updateUrl({ 
+      subcategories: userSelectedSubcategories,
+      step: 'form'
+    });
+  };
+  
+  // Enhanced form change handler with URL persistence
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    
+    // Update form state
+    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Update URL state for form persistence
+    updateUrl({ [name]: value });
+  };
 
-  // Handle form submission (async, send to backend)
+  // Enhanced form submission with URL state
   const handleSubmit = async (e, finalData = null) => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Merge all state sources for submission
     const submissionPayload = {
       service: selectedService,
-      category: selectedCategory,
-      subcategories: selectedSubcategories,
-      ...projectDetails,
+      category: urlState.category,
+      subcategories: Array.isArray(urlState.subcategories) ? urlState.subcategories.join(', ') : urlState.subcategories,
+      ...formData,
+      ...urlState,
       ...(finalData || {})
     };
 
@@ -184,7 +292,7 @@ const DetailsPage = () => {
 
       if (res.ok) {
         setIsSubmitting(false);
-        setCurrentScreen('confirmation');
+        updateUrl({ step: 'confirmation' });
         window.scrollTo(0, 0);
       } else {
         console.error('Backend error:', data.error);
@@ -195,9 +303,22 @@ const DetailsPage = () => {
       setIsSubmitting(false);
     }
   };
+  
+  // Navigation helpers
+  const goBackToCategories = () => {
+    updateUrl({ step: 'categories' });
+  };
+  
+  const goBackToSubcategories = () => {
+    updateUrl({ step: 'subcategories' });
+  };
+
+  // Debug current step and URL state
+  console.log('Details render - currentStep:', currentStep, 'urlState:', urlState);
 
   return (
     <div className="min-h-screen bg-white pt-20 sm:pt-24 md:pt-32" ref={topRef}>
+      <Meta />
       {/* Header/Navigation */}
       <Navbar /> 
       
@@ -218,7 +339,7 @@ const DetailsPage = () => {
       {/* Main Content */}
       <div className="relative z-10">
         {/* Categories Screen */}
-        {currentScreen === 'categories' && (
+        {currentStep === 'categories' && (
           <div ref={categoriesRef}>
             {/* Hero Section - Mobile Optimized */}
             <section className="px-4 sm:px-6 md:px-8 lg:px-16 py-10 sm:py-12 md:py-16 pt-16 sm:pt-20 md:pt-32 bg-[#1a2e44]/50 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12 mb-10 sm:mb-16">
@@ -376,24 +497,25 @@ const DetailsPage = () => {
         )}
         
         {/* Subcategories Selection Screen */}
-        {currentScreen === 'subcategories' && (
+        {currentStep === 'subcategories' && (
           <div ref={subcategoriesRef} className="bg-[#1a2e44]/50 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12 mb-10 sm:mb-16">
             <SubcategorySelection 
-              category={selectedCategory}
+              category={urlState.category}
               serviceId={getServiceId()}
               categories={categories}
-              onBack={() => setCurrentScreen('categories')}
+              selectedSubcategories={urlState.subcategories || []}
+              onBack={goBackToCategories}
               onSubmit={(selected) => handleSubcategorySubmit(selected)}
             />
           </div>
         )}
         
         {/* Details Screen */}
-        {currentScreen === 'details' && (
+        {currentStep === 'form' && (
           <div ref={detailsRef} className="max--4xl mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12 bg-[#1a2e44]/50 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12 mb-10 sm:mb-16 text-white">
             <div className="mb-6 sm:mb-10">
               <button 
-                onClick={() => setCurrentScreen('subcategories')} 
+                onClick={goBackToSubcategories}
                 className="inline-flex items-center text-white hover:text-black mb-3 sm:mb-4 text-sm sm:text-base"
               >
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -402,7 +524,7 @@ const DetailsPage = () => {
                 Back to Options
               </button>
               <h2 className="text-xl sm:text-2xl md:text-3xl font-light mb-3 sm:mb-4">
-                Tell us about your {categories.find(c => c.id === selectedCategory)?.name.toLowerCase()} project
+                Tell us about your {categories.find(c => c.id === urlState.category)?.name.toLowerCase()} project
               </h2>
               <p className="text-white text-sm sm:text-base">
                 Please provide details about your project so we can better understand your needs.
@@ -410,19 +532,19 @@ const DetailsPage = () => {
             </div>
             
             <ProjectDetailsForm 
-              projectDetails={projectDetails}
+              projectDetails={{ ...formData, ...urlState }}
               handleChange={handleChange}
               handleSubmit={handleSubmit}
               isSubmitting={isSubmitting}
-              selectedCategory={selectedCategory}
-              selectedSubcategories={selectedSubcategories}
+              selectedCategory={urlState.category}
+              selectedSubcategories={urlState.subcategories}
               categories={categories}
             />
           </div>
         )}
         
         {/* Confirmation Screen */}
-        {currentScreen === 'confirmation' && (
+        {currentStep === 'confirmation' && (
           <div className="max-w-xl sm:max-w-2xl mx-auto px-4 sm:px-6 md:px-8 py-10 sm:py-12 md:py-16 text-center bg-white/90 backdrop-blur-sm rounded-xl sm:rounded-3xl mx-3 sm:mx-4 md:mx-6 lg:mx-12 mb-10 sm:mb-16">
             <div className="p-6 sm:p-8 md:p-12 border border-gray-100">
               {/* Success icon */}
@@ -437,7 +559,7 @@ const DetailsPage = () => {
               </h2>
               
               <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-8">
-                Thank you for your interest. We'll contact you shortly to discuss your {categories.find(c => c.id === selectedCategory)?.name.toLowerCase()} project.
+                Thank you for your interest. We'll contact you shortly to discuss your {categories.find(c => c.id === urlState.category)?.name.toLowerCase()} project.
               </p>
               <button
                 onClick={() => navigate('/')}
@@ -464,9 +586,12 @@ const DetailsPage = () => {
               <ul className="space-y-1 sm:space-y-2">
                 {serviceCategories.map(service => (
                   <li key={service.id}>
-                    <Link to="/details" state={{ selectedService: service.title }} className="text-white hover:text-black transition-colors text-sm sm:text-base">
+                    <button 
+                      onClick={() => navigateWithState('/details', { service: getServiceSlugFromTitle(service.title), step: 'categories' })}
+                      className="text-white hover:text-black transition-colors text-sm sm:text-base"
+                    >
                       {service.title}
-                    </Link>
+                    </button>
                   </li>
                 ))}
               </ul>

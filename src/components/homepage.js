@@ -11,6 +11,9 @@ import Footer from '../utils/Footer';
 import orbGradientAnimation from '../assets/animations/orb-animation';
 // Import the centralized image config
 import images from '../imageConfig';
+// URL utilities for context-aware navigation
+import { buildUrl } from '../utils/urlUtils';
+import Meta from './Meta';
 
 const ModernHomePage = () => {
   const navigate = useNavigate(); // Add this line
@@ -18,6 +21,7 @@ const ModernHomePage = () => {
   
   return (
     <div className="min-h-screen bg-white pt-20 sm:pt-24 md:pt-32">
+      <Meta />
       {/* Header/Navigation */}    
       <Navbar /> 
       
@@ -101,7 +105,10 @@ const ModernHomePage = () => {
               We adopt a uniquely personalized perspective to each project to deliver stunning spaces of optimal function.
               Renowned for our architectural understanding and masterful craftsmanship, our portfolio of residential projects.
             </p>
-            <Link to="/contact" className="bg-black text-white px-5 sm:px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors text-sm sm:text-base">
+            <Link 
+              to={buildUrl('/contact', { source: 'homepage', ref: 'hero-cta' })} 
+              className="bg-black text-white px-5 sm:px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors text-sm sm:text-base"
+            >
               Get in touch
             </Link>
           </div>
@@ -110,7 +117,7 @@ const ModernHomePage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mt-16 sm:mt-20 md:mt-24">
             {/* Portfolio Image */}
             <Link 
-              to="/portfolio"
+              to={buildUrl('/portfolio', { source: 'homepage', highlight: 'featured' })}
               className="relative group rounded-xl sm:rounded-3xl overflow-hidden h-[250px] sm:h-[300px] cursor-pointer"
             >
               <img 
@@ -130,7 +137,7 @@ const ModernHomePage = () => {
             </Link>
 
             {/* Estimates Video */}
-            <Link to="/services" className="block">
+            <Link to={buildUrl('/services', { source: 'homepage', highlight: 'estimates' })} className="block">
               <div className="relative group rounded-xl sm:rounded-3xl overflow-hidden h-[250px] sm:h-[300px] cursor-pointer">
                 <div className="overflow-hidden">
                   <video 

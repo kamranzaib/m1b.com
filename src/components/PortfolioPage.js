@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../utils/Navbar';
 import Footer from '../utils/Footer';
 import { portfolioProjects } from '../data/portfolioProjects';
+import Meta from './Meta';
 
 // Aceternity-inspired Carousel component
 const ProjectCarousel = ({ images }) => {
@@ -223,6 +224,7 @@ const PortfolioPage = () => {
 
   return (
     <div className="min-h-screen bg-white pt-20 sm:pt-24 md:pt-32">
+      <Meta />
       {/* Header/Navigation */}    
       <Navbar /> 
       

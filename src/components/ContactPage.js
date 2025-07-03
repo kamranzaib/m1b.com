@@ -1,25 +1,69 @@
 // src/components/ContactPage.js
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { Player } from '@lottiefiles/react-lottie-player';
 import Navbar from '../utils/Navbar';
 import Footer from '../utils/Footer';
 import orbGradientAnimation from '../assets/animations/orb-animation';
 import { useToast } from '../utils/context/toastContext';
 import { motion } from 'framer-motion';
+import { getServiceLabel, getCategoryLabel } from '../utils/urlUtils';
+import Meta from './Meta';
 
 const ContactPage = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const [searchParams] = useSearchParams();
+  
+  // Extract context from URL parameters
+  const urlContext = {
+    source: searchParams.get('source') || 'direct',
+    service: searchParams.get('service'),
+    category: searchParams.get('category'),
+    project: searchParams.get('project'),
+    referrer: searchParams.get('ref')
+  };
 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    projectType: 'Custom Home',
-    message: ''
-  });
+  // Initialize form with context-aware defaults
+  const getInitialFormData = () => {
+    let projectType = 'Custom Home';
+    let message = '';
+    
+    // Pre-populate based on URL context
+    if (urlContext.service) {
+      const serviceLabel = getServiceLabel(urlContext.service);
+      projectType = serviceLabel;
+      
+      if (urlContext.category) {
+        const categoryLabel = getCategoryLabel(urlContext.category);
+        message = `I'm interested in ${categoryLabel.toLowerCase()} for ${serviceLabel.toLowerCase()}. `;
+      } else {
+        message = `I'm interested in ${serviceLabel.toLowerCase()}. `;
+      }
+    }
+    
+    if (urlContext.project) {
+      message += `Specifically interested in ${urlContext.project.replace(/-/g, ' ')}. `;
+    }
+    
+    // Add source context
+    if (urlContext.source === 'details-form') {
+      message += 'I was filling out your project details form and would like to discuss my project further.';
+    } else if (urlContext.source === 'portfolio') {
+      message += 'I saw your portfolio and would like to discuss a similar project.';
+    }
+    
+    return {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      projectType,
+      message: message.trim()
+    };
+  };
+
+  const [formData, setFormData] = useState(getInitialFormData());
   
   // Add state to track form submission
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -27,7 +71,34 @@ const ContactPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    
+    // Update form data if URL context changes
+    setFormData(getInitialFormData());
+  }, [searchParams]);
+  
+  // Get contextual page title
+  const getPageTitle = () => {
+    if (urlContext.service && urlContext.category) {
+      return `Contact Us About ${getCategoryLabel(urlContext.category)} - ${getServiceLabel(urlContext.service)}`;
+    } else if (urlContext.service) {
+      return `Contact Us About ${getServiceLabel(urlContext.service)}`;
+    } else if (urlContext.source === 'portfolio') {
+      return 'Contact Us About Your Project';
+    }
+    return 'Contact M1B Construction';
+  };
+  
+  // Get contextual subtitle
+  const getPageSubtitle = () => {
+    if (urlContext.source === 'details-form') {
+      return 'Continue the conversation about your project';
+    } else if (urlContext.source === 'portfolio') {
+      return 'Let\'s discuss your project based on our previous work';
+    } else if (urlContext.service) {
+      return `Get started with your ${getServiceLabel(urlContext.service).toLowerCase()} project`;
+    }
+    return 'Ready to start your construction project? Let\'s talk!';
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +117,15 @@ const ContactPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    
+    // Include URL context in form submission
+    const submissionData = {
+      ...formData,
+      context: urlContext,
+      timestamp: new Date().toISOString()
+    };
+    
+    console.log('Form submitted:', submissionData);
     
     // Set submitting state to true to show loading indicator
     setIsSubmitting(true);
@@ -133,6 +212,7 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen">
+      <Meta />
       <Navbar />
 
       {/* Background Images */}

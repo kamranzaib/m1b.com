@@ -5,6 +5,7 @@ import Navbar from '../utils/Navbar';
 import images from '../imageConfig';
 import Footer from '../utils/Footer';
 import { Timeline } from '../utils/ui/timeline';
+import Meta from './Meta';
 
 const AboutPage = () => {
   useEffect(() => {
@@ -148,6 +149,7 @@ M1B was founded in 2020 by a software engineer with a lifelong passion for archi
 
   return (
     <div className="min-h-screen bg-white pt-20 sm:pt-24 md:pt-32">
+      <Meta />
       {/* Navigation */}
       <Navbar />
       
