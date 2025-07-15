@@ -9,6 +9,7 @@ import { useToast } from '../utils/context/toastContext';
 import { motion } from 'framer-motion';
 import { getServiceLabel, getCategoryLabel } from '../utils/urlUtils';
 import Meta from './Meta';
+import { trackMetaEvent } from '../utils/metaTracker';
 
 const ContactPage = () => {
   const navigate = useNavigate();
@@ -129,20 +130,32 @@ const ContactPage = () => {
     
     // Set submitting state to true to show loading indicator
     setIsSubmitting(true);
-  
+
     try {
       const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/contact`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-  
+
       const data = await res.json();
-  
+
       if (res.ok) {
         // Show success toast
         showToast('Thank you for your message! We will get back to you soon.', 'success', 3000);
         
+        // 📣 Trigger Meta Conversions API
+        await trackMetaEvent('Contact', {
+          email: formData.email,
+          phone: formData.phone
+        }, {
+          sourceUrl: window.location.href,
+          projectType: formData.projectType,
+          referrer: urlContext.referrer,
+          service: urlContext.service,
+          category: urlContext.category
+        });
+
         // Set submitted state to true to show thank you message
         setIsSubmitted(true);
         

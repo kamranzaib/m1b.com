@@ -8,6 +8,7 @@ import {
   commercialCategories,
   getSubcategories  // IMPORT THIS FROM THE DATA FILE
 } from '../data/categories';
+import { trackMetaEvent } from '../utils/metaTracker';
 
 const ProjectDetailsForm = ({ 
   projectDetails, 
@@ -144,6 +145,17 @@ const ProjectDetailsForm = ({
       subcategories: getSubcategoryNames(),
     };
     handleSubmit(e, finalData);
+
+    // 📣 Trigger Meta Conversions API with test event code
+    trackMetaEvent('Lead', {
+      email: finalData.email,
+      phone: finalData.phone
+    }, {
+      sourceUrl: window.location.href,
+      category: finalData.category,
+      budget: finalData.budget,
+      area: finalData.area
+    },); // Replace with actual test event code
   };
 
   
