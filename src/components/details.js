@@ -32,6 +32,7 @@ import { useUrlState } from '../hooks/useUrlState';
 import { useStepNavigation } from '../hooks/useStepNavigation';
 import { serviceSlugToId, serviceIdToSlug, generateMetaTags } from '../utils/urlUtils';
 import { validateStepTransition } from '../utils/stepValidation';
+import { apiPost } from '../utils/api';
 
 const DetailsPage = () => {
   const topRef = useRef(null);
@@ -282,12 +283,7 @@ const DetailsPage = () => {
     };
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submissionPayload)
-      });
-
+      const res = await apiPost('/api/contact', submissionPayload);
       const data = await res.json();
 
       if (res.ok) {

@@ -10,6 +10,7 @@ import { motion } from 'framer-motion';
 import { getServiceLabel, getCategoryLabel } from '../utils/urlUtils';
 import Meta from './Meta';
 import { trackMetaEvent } from '../utils/metaTracker';
+import { apiPost } from '../utils/api';
 
 const ContactPage = () => {
   const navigate = useNavigate();
@@ -132,12 +133,7 @@ const ContactPage = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
+      const res = await apiPost('/api/contact', formData);
       const data = await res.json();
 
       if (res.ok) {
@@ -171,7 +167,6 @@ const ContactPage = () => {
       console.error('Fetch error:', err);
       setIsSubmitting(false);
     }
-    console.log(process.env.REACT_APP_API_BASE_URL);
   };
   
   const handleGoToServices = () => {

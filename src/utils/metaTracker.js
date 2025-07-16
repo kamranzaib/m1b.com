@@ -1,21 +1,19 @@
+import { apiPost } from './api';
+
 export async function trackMetaEvent(eventName, userData, customData) {
   try {
     const pixelData = {
-      event_name: eventName,
-      user_data: {
-        em: userData.email ? hashEmail(userData.email) : null,
-        ph: userData.phone ? hashPhone(userData.phone) : null
-      },
-      custom_data: customData || {},
-      event_source_url: customData?.sourceUrl || window.location.href,
-      action_source: 'website'
+      eventName,
+      email: userData.email,
+      phone: userData.phone,
+      eventData: {
+        ...customData,
+        event_source_url: customData?.sourceUrl || window.location.href,
+        action_source: 'website'
+      }
     };
 
-    const response = await fetch('/api/meta-pixel', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(pixelData)
-    });
+    const response = await apiPost('/api/meta/track', pixelData);
 
     if (response.ok) {
       console.log('Meta event tracked successfully:', eventName);
