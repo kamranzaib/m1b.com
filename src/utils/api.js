@@ -13,8 +13,8 @@ export const getApiBaseUrl = () => {
     return '';
   }
   
-  // In production, use the same origin as the frontend
-  return window.location.origin;
+  // In production, use your backend service URL
+  return process.env.REACT_APP_API_BASE_URL || 'https://email-backend-832099135223.us-central1.run.app';
 };
 
 /**
