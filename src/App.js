@@ -8,6 +8,7 @@ import PortfolioPage from './components/PortfolioPage';
 import AboutPage from './components/AboutPage';
 import ServicesPage from './components/ServicesPage';
 import { ToastProvider } from './utils/context/toastContext';
+import PrivacyPolicy from './components/PrivacyPolicy';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: '/about',
     element: <AboutPage />
+  },
+  {
+    path: '/privacy-policy',
+    element: <PrivacyPolicy />
   }
 
 ]);
