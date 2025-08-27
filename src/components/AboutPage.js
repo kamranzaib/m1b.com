@@ -125,7 +125,7 @@ M1B was founded in 2020 by a software engineer with a lifelong passion for archi
       name: 'Kamran Zaib',
       role: 'Founder & Lead Engineer',
       image: '',
-      bio: 'Software Engineer turned Construction Lead, with years of expertise in project planing and best design for large scale applications'
+      bio: 'Software Engineer turned Construction Lead, with years of expertise in project planing and best design for large scale systems'
     },
     {
       name: 'Mohammad Awan',
@@ -143,7 +143,7 @@ M1B was founded in 2020 by a software engineer with a lifelong passion for archi
       name: 'Tommy Giannopolous',
       role: 'Project Head',
       image: 'A hands-on leader with extensive field experience, our Project Head oversees all phases of construction—from breaking ground to final handoff. Known for precise coordination and deadline-driven execution, they ensure every job meets our highest standards for quality and efficiency.',
-      bio: 'Specializing in creating personalized, functional interiors, Amara works closely with clients to transform houses into homes that reflect their personalities and lifestyles.'
+      bio: 'Specializing in creating personalized, functional interiors, Tommy works closely with clients to transform houses into homes that reflect their personalities and lifestyles.'
     }
   ];
 
