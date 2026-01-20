@@ -4,6 +4,7 @@ import './App.css';
 import ConstructionAppUI from './components/homepage';
 import RenovationApp from './components/details';
 import ContactPage from './components/ContactPage';
+import ServicePageForm from './components/ServicePageForm';
 import PortfolioPage from './components/PortfolioPage';
 import AboutPage from './components/AboutPage';
 import ServicesPage from './components/ServicesPage';
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: '/contact',
     element: <ContactPage />
+  },
+  {
+    path: '/service-quote',
+    element: <ServicePageForm />
   },
   {
     path: '/portfolio',

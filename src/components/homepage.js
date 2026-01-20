@@ -157,35 +157,6 @@ const ModernHomePage = () => {
           </div>
         </section>
 
-        {/* Inclusions Section */}
-        <section className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 mb-16 sm:mb-20 md:mb-24">
-          <div className="bg-gray-900 text-white rounded-xl sm:rounded-3xl overflow-hidden">
-            <div className="flex flex-col md:flex-row">
-              <div className="w-full md:w-1/2 p-5 sm:p-6 md:p-10 flex flex-col justify-center">
-                <h2 className="text-2xl sm:text-3xl md:text-4xl mb-3 sm:mb-4">
-                  Our timeless <span className="italic">inclusions</span>
-                </h2>
-                <p className="text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base">
-                  We've been creating dream homes our clients are thrilled to call their own. 
-                  Delighting them with hand-picked finishes, accessories and accents.
-                </p>
-                <div>
-                  <Link to="/inclusions" className="border border-white text-white px-6 py-2 sm:py-3 inline-block hover:bg-white hover:text-black transition-colors text-sm sm:text-base">
-                    View Inclusions
-                  </Link>
-                </div>
-              </div>
-              <div className="w-full md:w-1/2 h-[200px] sm:h-[250px] md:min-h-[200px]">
-                <img 
-                  src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
-                  alt="Luxury kitchen" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Services Section
         <section id="services" className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 lg:px-16 mb-16 sm:mb-20 md:mb-24 mx-4 sm:mx-6 md:mx-8 lg:mx-16">          
           <div className="max-w-7xl mx-auto">

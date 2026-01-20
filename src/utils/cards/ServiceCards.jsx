@@ -13,14 +13,15 @@ const ServiceCard = ({ title, description, service, image, icon }) => {
     return titleToSlug[title] || 'custom-home';
   };
 
-  const detailsUrl = buildUrl('/details', {
+  // Link directly to service quote form with service pre-selected
+  const serviceFormUrl = buildUrl('/service-quote', {
     service: getServiceSlug(title),
-    step: 'categories'
+    source: 'services'
   });
 
   return (
     <Link
-      to={detailsUrl}
+      to={serviceFormUrl}
       className="rounded-xl sm:rounded-2xl overflow-hidden text-white relative group hover:shadow-lg transition transform hover:-translate-y-1 h-[220px] sm:h-[250px] md:h-[300px]"
     >
       {/* Background Image and Overlay */}

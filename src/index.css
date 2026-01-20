@@ -1,5 +1,6 @@
 @tailwind base;
 @tailwind components;
+@import './styles/glassmorphism.css';
 @tailwind utilities;
 
 html, body, #root {

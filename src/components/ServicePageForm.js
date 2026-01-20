@@ -1,32 +1,109 @@
-// src/components/ContactPage.js
+// src/components/ServicePageForm.js
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { Player } from '@lottiefiles/react-lottie-player';
 import Navbar from '../utils/Navbar';
+import Footer from '../utils/Footer';
 import orbGradientAnimation from '../assets/animations/orb-animation';
 import { useToast } from '../utils/context/toastContext';
 import { motion } from 'framer-motion';
+import { getServiceLabel, getCategoryLabel } from '../utils/urlUtils';
 import Meta from './Meta';
 import { trackMetaEvent } from '../utils/metaTracker';
 import { apiPost } from '../utils/api';
 
-const ContactPage = () => {
+const ServicePageForm = () => {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const [searchParams] = useSearchParams();
 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    message: ''
-  });
+  // Extract context from URL parameters
+  const urlContext = {
+    source: searchParams.get('source') || 'direct',
+    service: searchParams.get('service'),
+    category: searchParams.get('category'),
+    project: searchParams.get('project'),
+    referrer: searchParams.get('ref')
+  };
 
+  // Initialize form with context-aware defaults
+  const getInitialFormData = () => {
+    let projectType = 'Custom Home';
+    let message = '';
+
+    // Map service slugs to form project types
+    const serviceToProjectType = {
+      'custom-home': 'Custom Home',
+      'renovations': 'Renovation',
+      'commercial': 'Commercial'
+    };
+
+    // Pre-populate based on URL context
+    if (urlContext.service) {
+      const serviceLabel = getServiceLabel(urlContext.service);
+      projectType = serviceToProjectType[urlContext.service] || 'Custom Home';
+
+      if (urlContext.category) {
+        const categoryLabel = getCategoryLabel(urlContext.category);
+        message = `I'm interested in ${categoryLabel.toLowerCase()} for ${serviceLabel.toLowerCase()}. `;
+      } else {
+        message = `I'm interested in ${serviceLabel.toLowerCase()}. `;
+      }
+    }
+
+    if (urlContext.project) {
+      message += `Specifically interested in ${urlContext.project.replace(/-/g, ' ')}. `;
+    }
+
+    // Add source context
+    if (urlContext.source === 'details-form') {
+      message += 'I was filling out your project details form and would like to discuss my project further.';
+    } else if (urlContext.source === 'portfolio') {
+      message += 'I saw your portfolio and would like to discuss a similar project.';
+    } else if (urlContext.source === 'services') {
+      message += 'I would like to learn more about this service and discuss my project.';
+    }
+
+    return {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      projectType,
+      message: message.trim()
+    };
+  };
+
+  const [formData, setFormData] = useState(getInitialFormData());
+
+  // Add state to track form submission
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+
+    // Update form data if URL context changes
+    setFormData(getInitialFormData());
+  }, [searchParams]);
+
+  // Get contextual page title
+  const getPageTitle = () => {
+    if (urlContext.service && urlContext.category) {
+      return `Get a Quote - ${getCategoryLabel(urlContext.category)}`;
+    } else if (urlContext.service) {
+      return `Get a Quote - ${getServiceLabel(urlContext.service)}`;
+    }
+    return 'Get a Quote';
+  };
+
+  // Get contextual subtitle
+  const getPageSubtitle = () => {
+    if (urlContext.service) {
+      return `Tell us about your ${getServiceLabel(urlContext.service).toLowerCase()} project`;
+    }
+    return 'Tell us about your project and we\'ll get back to you within 24 hours';
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,8 +113,26 @@ const ContactPage = () => {
     });
   };
 
+  const handleRadioChange = (value) => {
+    setFormData({
+      ...formData,
+      projectType: value
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Include URL context in form submission
+    const submissionData = {
+      ...formData,
+      context: urlContext,
+      timestamp: new Date().toISOString()
+    };
+
+    console.log('Form submitted:', submissionData);
+
+    // Set submitting state to true to show loading indicator
     setIsSubmitting(true);
 
     try {
@@ -45,15 +140,25 @@ const ContactPage = () => {
       const data = await res.json();
 
       if (res.ok) {
+        // Show success toast
         showToast('Thank you for your message! We will get back to you soon.', 'success', 3000);
 
+        // Trigger Meta Conversions API
         await trackMetaEvent('Contact', {
-          email: formData.email
+          email: formData.email,
+          phone: formData.phone
         }, {
-          sourceUrl: window.location.href
+          sourceUrl: window.location.href,
+          projectType: formData.projectType,
+          referrer: urlContext.referrer,
+          service: urlContext.service,
+          category: urlContext.category
         });
 
+        // Set submitted state to true to show thank you message
         setIsSubmitted(true);
+
+        // Reset submitting state
         setIsSubmitting(false);
       } else {
         showToast('Failed to send message. Please try again later.', 'error');
@@ -71,6 +176,7 @@ const ContactPage = () => {
     navigate('/services');
   };
 
+  // Thank you message component to display after form submission
   const ThankYouMessage = () => (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -88,15 +194,21 @@ const ContactPage = () => {
 
       <h2 className="text-2xl sm:text-3xl font-bold mb-4">Thank You!</h2>
       <p className="text-lg mb-6">
-        We've received your message and will get back to you within 24 hours.
+        We've received your inquiry and will get back to you within 24 hours.
       </p>
+
+      <div className="mb-8">
+        <h3 className="text-xl font-semibold mb-2">Your Project Details:</h3>
+        <p><strong>Type:</strong> {formData.projectType}</p>
+        <p><strong>Contact:</strong> {formData.email}</p>
+      </div>
 
       <div className="flex flex-col sm:flex-row justify-center gap-4">
         <button
           onClick={() => window.location.reload()}
           className="bg-white text-[#1a2e44] hover:bg-gray-100 px-5 py-2 rounded-lg font-medium transition-colors"
         >
-          Send Another Message
+          Submit Another Inquiry
         </button>
 
         <button
@@ -129,12 +241,12 @@ const ContactPage = () => {
 
       {/* Content Container */}
       <div className="relative z-10 pt-24 sm:pt-28 md:pt-32 px-4 sm:px-6 md:px-8 lg:px-16 pb-16">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Section Title */}
           <div className="text-center text-white mb-8 md:mb-12">
-            <h1 className="text-4xl sm:text-5xl font-light mb-4">Contact Us</h1>
+            <h1 className="text-4xl sm:text-5xl font-light mb-4">{getPageTitle()}</h1>
             <p className="text-lg md:text-xl max-w-3xl mx-auto">
-              Send us an email and we'll get back to you within 24 hours
+              {getPageSubtitle()}
             </p>
           </div>
 
@@ -142,10 +254,11 @@ const ContactPage = () => {
           <div className="flex flex-col md:flex-row rounded-2xl overflow-hidden bg-white shadow-xl">
             {/* Left Column - Contact Information */}
             <div className="bg-[#1a2e44] text-white p-6 sm:p-10 md:w-5/12 relative" style={{ overflow: 'visible' }}>
+              {/* Info Content */}
               <div className="relative z-10">
                 <h2 className="text-2xl sm:text-3xl font-semibold mb-6">Contact Information</h2>
                 <p className="mb-8 text-white/80">
-                  Have a question or want to discuss a project? We'd love to hear from you.
+                  Fill up the form and our Team will get back to you within 24 hours.
                 </p>
 
                 {/* Contact Details */}
@@ -206,8 +319,8 @@ const ContactPage = () => {
               {/* Orb Animation with Services Button */}
               <div className="absolute bottom-4 left-6 sm:bottom-6 sm:left-8 z-10">
                 <div className="relative" style={{ overflow: 'visible' }}>
-                  <div className="absolute hidden sm:block" style={{ right: '-30px', top: '-85px', overflow: 'visible' }}>
-                    <Player
+                <div className="absolute hidden sm:block" style={{ right: '-30px', top: '-85px', overflow: 'visible' }}>
+                <Player
                       autoplay
                       loop
                       speed={3}
@@ -224,20 +337,20 @@ const ContactPage = () => {
                   <button
                     onClick={handleGoToServices}
                     className="relative z-10 bg-white/10 backdrop-blur-sm text-white px-3 py-2 sm:px-4 sm:py-2 transition-all text-xs sm:text-sm font-medium hover:bg-white/30 rounded-lg"
-                  >
+                    >
                     Browse Services
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Right Column - Simple Email Form */}
+            {/* Right Column - Contact Form or Thank You Message */}
             <div className="p-6 sm:p-10 md:w-7/12">
               {isSubmitted ? (
                 <ThankYouMessage />
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Name Fields */}
+                  {/* Name Fields - 2 column on larger screens */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-gray-700 text-sm font-medium mb-2">First Name</label>
@@ -267,19 +380,55 @@ const ContactPage = () => {
                     </div>
                   </div>
 
-                  {/* Email */}
+                  {/* Email and Phone - 2 column on larger screens */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-2">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+                        placeholder="example@email.com"
+                        required
+                        disabled={isSubmitting}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-2">Phone</label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
+                        placeholder="(123) 456-7890"
+                        disabled={isSubmitting}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Project Type Selection */}
                   <div>
-                    <label className="block text-gray-700 text-sm font-medium mb-2">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
-                      placeholder="example@email.com"
-                      required
-                      disabled={isSubmitting}
-                    />
+                    <label className="block text-gray-700 text-sm font-medium mb-2">What type of project do you need?</label>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {['Custom Home', 'Renovation', 'Commercial', 'Other'].map((type) => (
+                        <div
+                          key={type}
+                          className={`
+                            flex items-center justify-center p-3 border rounded-lg cursor-pointer text-center transition-colors
+                            ${formData.projectType === type
+                              ? 'border-[#1a2e44] bg-[#1a2e44] text-white'
+                              : 'border-gray-300 hover:border-gray-400'}
+                            ${isSubmitting ? 'opacity-60 cursor-not-allowed' : ''}
+                          `}
+                          onClick={() => !isSubmitting && handleRadioChange(type)}
+                        >
+                          <span className="text-sm">{type}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Message */}
@@ -289,9 +438,9 @@ const ContactPage = () => {
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      rows="5"
+                      rows="4"
                       className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1a2e44] focus:border-transparent"
-                      placeholder="Write your message..."
+                      placeholder="Tell us about your project..."
                       required
                       disabled={isSubmitting}
                     ></textarea>
@@ -303,7 +452,7 @@ const ContactPage = () => {
                       type="submit"
                       disabled={isSubmitting}
                       className={`
-                        bg-[#1a2e44] text-white font-medium py-3 px-8 rounded-lg transition-colors
+                        bg-[#1a2e44] text-white font-medium py-3 px-6 rounded-lg transition-colors
                         ${isSubmitting
                           ? 'opacity-70 cursor-not-allowed'
                           : 'hover:bg-[#152435]'}
@@ -318,7 +467,7 @@ const ContactPage = () => {
                           Sending...
                         </span>
                       ) : (
-                        'Send Message'
+                        'Get a Quote'
                       )}
                     </button>
                   </div>
@@ -332,4 +481,4 @@ const ContactPage = () => {
   );
 };
 
-export default ContactPage;
+export default ServicePageForm;
