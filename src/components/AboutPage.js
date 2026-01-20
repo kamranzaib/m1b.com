@@ -172,7 +172,7 @@ M1B was founded in 2020 by a software engineer with a lifelong passion for archi
         <section className="px-4 sm:px-6 md:px-8 lg:px-16 mb-16">
           <div className="max-w-7xl mx-auto">
             <div className="text-center text-white mb-8">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">About M1B Construction</h1>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-light mb-4">About M1B</h1>
               <p className="text-lg md:text-xl max-w-3xl mx-auto">
                 Building exceptional spaces with precision, passion, and uncompromising quality.
               </p>
